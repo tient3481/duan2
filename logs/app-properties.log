@@ -1,0 +1,20 @@
+2019-11-05 00:07:43,511 DEBUG c.f.h.d.M.MailConfig [main] Config properties: {mail.smtp.port=465, mail.smtp.socketFactory.port=465, mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory, mail.smtp.host=smtp.gmail.com, mail.smtp.auth=true}
+2019-11-05 00:07:54,447 INFO c.f.h.d.M.MailConfig [main] Mail info sended: To: anbvph06661@fpt.edu.vn, From: anbvph06661@fpt.edu.vn, Subject: Reset password system
+2019-11-05 14:47:07,746 DEBUG c.f.h.d.M.MailConfig [main] Config properties: {mail.smtp.port=465, mail.smtp.socketFactory.port=465, mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory, mail.smtp.host=smtp.gmail.com, mail.smtp.auth=true}
+2019-11-05 14:47:22,527 INFO c.f.h.d.M.MailConfig [main] Mail info sended: To: anbvph06661@fpt.edu.vn, From: an.bui@xtel.vn, Subject: Reset password system
+2019-11-05 14:47:54,135 DEBUG c.f.h.d.M.MailConfig [main] Config properties: {mail.smtp.port=465, mail.smtp.socketFactory.port=465, mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory, mail.smtp.host=smtp.gmail.com, mail.smtp.auth=true}
+2019-11-05 14:48:08,421 INFO c.f.h.d.M.MailConfig [main] Mail info sended: To: anbvph06661@fpt.edu.vn, From: anbvph06661@fpt.edu.vn, Subject: Reset password system
+2019-11-05 15:02:00,426 DEBUG c.f.h.d.M.MailConfig [main] Config properties: {mail.smtp.port=465, mail.smtp.socketFactory.port=465, mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory, mail.smtp.host=smtp.gmail.com, mail.smtp.auth=true}
+2019-11-05 15:02:15,569 INFO c.f.h.d.M.MailConfig [main] Mail info sended: To: anbvph06661@fpt.edu.vn, From: anbvph06661@fpt.edu.vn, Subject: Reset password system
+2019-11-05 15:03:18,914 DEBUG c.f.h.d.M.MailConfig [main] Config properties: {mail.smtp.port=465, mail.smtp.socketFactory.port=465, mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory, mail.smtp.host=smtp.gmail.com, mail.smtp.auth=true}
+2019-11-05 15:03:33,368 INFO c.f.h.d.M.MailConfig [main] Mail info sended: To: anbvph06661@fpt.edu.vn, From: anbvph06661@fpt.edu.vn, Subject: Reset password system
+2019-11-05 15:03:47,711 DEBUG c.f.h.d.M.MailConfig [main] Config properties: {mail.smtp.port=465, mail.smtp.socketFactory.port=465, mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory, mail.smtp.host=smtp.gmail.com, mail.smtp.auth=true}
+2019-11-05 15:04:01,913 INFO c.f.h.d.M.MailConfig [main] Mail info sended: To: anbvph06661@fpt.edu.vn, From: anbvph06661@fpt.edu.vn, Subject: Reset password system
+2019-11-05 15:04:23,390 DEBUG c.f.h.d.M.MailConfig [main] Config properties: {mail.smtp.port=465, mail.smtp.socketFactory.port=465, mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory, mail.smtp.host=smtp.gmail.com, mail.smtp.auth=true}
+2019-11-05 15:04:37,785 INFO c.f.h.d.M.MailConfig [main] Mail info sended: To: anbvph06661@fpt.edu.vn, From: anbvph06661@fpt.edu.vn, Subject: Reset password system
+2019-11-05 15:06:05,787 DEBUG c.f.h.d.M.MailConfig [main] Config properties: {mail.smtp.port=465, mail.smtp.socketFactory.port=465, mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory, mail.smtp.host=smtp.gmail.com, mail.smtp.auth=true}
+2019-11-05 15:06:19,646 INFO c.f.h.d.M.MailConfig [main] Mail info sended: To: anbvph06661@fpt.edu.vn, From: anbvph06661@fpt.edu.vn, Subject: Reset password system
+2019-11-05 15:06:36,247 DEBUG c.f.h.d.M.MailConfig [main] Config properties: {mail.smtp.port=465, mail.smtp.socketFactory.port=465, mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory, mail.smtp.host=smtp.gmail.com, mail.smtp.auth=true}
+2019-11-05 15:06:50,289 INFO c.f.h.d.M.MailConfig [main] Mail info sended: To: anbvph06661@fpt.edu.vn, From: anbvph06661@fpt.edu.vn, Subject: Reset password system
+2019-11-05 15:14:41,472 DEBUG c.f.h.d.M.MailConfig [main] Config properties: {mail.smtp.port=465, mail.smtp.socketFactory.port=465, mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory, mail.smtp.host=smtp.gmail.com, mail.smtp.auth=true}
+2019-11-05 15:15:08,923 INFO c.f.h.d.M.MailConfig [main] Mail info sended: To: anbvph06661@fpt.edu.vn, From: anbvph06661@fpt.edu.vn, Subject: Reset password system
