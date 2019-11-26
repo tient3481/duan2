@@ -94,9 +94,19 @@
 
 		<!-- Sidebar -->
 		<ul class="sidebar navbar-nav">
-			<li class="nav-item active"><a class="nav-link"
-				href="index.html"> <i class="fas fa-fw fa-home"></i> <span>Dashboard</span>
-			</a></li>
+			<c:if test="${roleId ==1}">
+				<li class="nav-item active"><a class="nav-link"
+					href="${pageContext.request.contextPath}/api/employee/get"> <i
+						class="fas fa-fw fa-home"></i> <span>Home</span>
+				</a></li>
+			</c:if>
+
+			<c:if test="${roleId !=1}">
+				<li class="nav-item active"><a class="nav-link"
+					href="${pageContext.request.contextPath}/api/employee/update/${accountId}">
+						<i class="fas fa-fw fa-home"></i> <span>Home</span>
+				</a></li>
+			</c:if>
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -289,52 +299,75 @@ ${pageContext.request.contextPath}/api/login">Danh
 						<i class="fas fa-table"> Employee</i>
 
 					</div>
-					<div class="card-body">
-						<div class="table-responsive">
-							<table class="table table-bordered" id="dataTable">
-								<thead>
-									<c:if test="${roleId == 1 || roleId == 2}">
-										<th>Tổng số đơn cần phê duyệt: ${count}</th>
-									</c:if>
-									<tr>
-										<th>Tên</th>
-										<th>Loại nghỉ phép</th>
-										<th>Ngày bắt đầu</th>
-										<th>Ngày kết thúc</th>
-										<th>Thời gian bắt đầu</th>
-										<th>Thời gian kết thúc</th>
-										<th>Trạng thái</th>
-										<th>Người duyệt</th>
+					<form
+						action="${pageContext.request.contextPath}/api/employee/leave">
+						<div class="card-body">
+							<div class="table-responsive">
+								Tổng số đơn cần phê duyệt: ${count}
+								<table class="table table-bordered" id="dataTable">
+									<thead>
 										<c:if test="${roleId == 1 || roleId == 2}">
-											<th>Thao tác</th>
 										</c:if>
-
-									</tr>
-								</thead>
-								<c:forEach var="list" items="${listEmployeeLeave}">
-									<tbody>
 										<tr>
-											<td>${list.getEmployeeName()}</td>
-											<td>${list.getReasonName()}</td>
-											<td>${list.getStart_date()}</td>
-											<td>${list.getEnd_date()}</td>
-											<td>${list.getStart_time()}</td>
-											<td>${list.getEnd_time()}</td>
-											<td>${list.getAcceptStatusName()}</td>
-											<td>${list.getEmployee_accept()}</td>
-											<c:if test="${(roleId == 1 || roleId == 2)}">
-												<td><c:if test="${list.getAccept_status() == 0}">
-														<button type="button" class="btn btn-outline-warning">Accept</button>
-													</c:if>
+											<th>Mã đăng ký</th>
+											<th>Tên</th>
+											<th>Loại nghỉ phép</th>
+											<th>Ngày bắt đầu</th>
+											<th>Ngày kết thúc</th>
+											<th>Thời gian bắt đầu</th>
+											<th>Thời gian kết thúc</th>
+											<th>Trạng thái</th>
+											<th>Người duyệt</th>
+
+											<c:if test="${list.getAccept_status() == 0}">
+												<th>Thao tác</th>
 											</c:if>
 										</tr>
-									</tbody>
-								</c:forEach>
+									</thead>
+									<c:forEach var="list" items="${listEmployeeLeave}">
+										<tbody>
+											<tr>
+												<td>${list.getId()}</td>
+												<td>${list.getEmployeeName()}</td>
+												<td>${list.getReasonName()}</td>
+												<td>${list.getStart_date()}</td>
+												<td>${list.getEnd_date()}</td>
+												<td>${list.getStart_time()}</td>
+												<td>${list.getEnd_time()}</td>
 
-							</table>
-							<a>Role name: ${roleName}</a>
+												<c:if test="${list.getAccept_status() == 1}">
+													<td style="color: green;">${list.getAcceptStatusName()}</td>
+												</c:if>
+
+												<c:if test="${list.getAccept_status() == 0}">
+													<td style="color: #FFD700;">${list.getAcceptStatusName()}</td>
+												</c:if>
+
+												<c:if test="${list.getAccept_status() == 2}">
+													<td style="color: red;">${list.getAcceptStatusName()}</td>
+												</c:if>
+
+												<td>${list.getEmployee_accept()}</td>
+												<c:if test="${(roleId == 1 || roleId == 2)}">
+													<c:if test="${list.getAccept_status() == 0}">
+														<td><a
+															href="${pageContext.request.contextPath}/api/employee/leave/accept/${list.getId()}"
+															class="btn btn-success" role="submit">Accept </a> <a
+															href="${pageContext.request.contextPath}/api/employee/leave/cancel/${list.getId()}"
+															class="btn btn-danger" role="submit">Cancel </a></td>
+													</c:if>
+												</c:if>
+											</tr>
+										</tbody>
+									</c:forEach>
+
+								</table>
+								<a>Role name: ${roleName}</a>
+
+							</div>
 						</div>
-					</div>
+					</form>
+
 				</div>
 
 			</div>

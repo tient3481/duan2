@@ -16,6 +16,9 @@ public class DepartmentEmployeeGetOneResponse {
 	private String start_date;
 	private String end_date;
 
+	private String startDateName;
+	private String endDateName;
+
 	public DepartmentEmployeeGetOneResponse() {
 		super();
 	}
@@ -116,6 +119,22 @@ public class DepartmentEmployeeGetOneResponse {
 		this.end_date = end_date;
 	}
 
+	public String getStartDateName() {
+		return startDateName;
+	}
+
+	public void setStartDateName(String startDateName) {
+		this.startDateName = startDateName;
+	}
+
+	public String getEndDateName() {
+		return endDateName;
+	}
+
+	public void setEndDateName(String endDateName) {
+		this.endDateName = endDateName;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -126,7 +145,8 @@ public class DepartmentEmployeeGetOneResponse {
 				.append(positionName).append(", employeeDepartmentId=").append(employeeDepartmentId)
 				.append(", employeeTypeId=").append(employeeTypeId).append(", departmentId=").append(departmentId)
 				.append(", positionId=").append(positionId).append(", start_date=").append(start_date)
-				.append(", end_date=").append(end_date).append("]");
+				.append(", end_date=").append(end_date).append(", startDateName=").append(startDateName)
+				.append(", endDateName=").append(endDateName).append("]");
 		return builder.toString();
 	}
 

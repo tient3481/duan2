@@ -11,25 +11,31 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fpt.hr_management.daoImpl.LeaveImpl;
 import com.fpt.hr_management.daoImpl.account.AccountLogin;
+import com.fpt.hr_management.daoImpl.holiday_info.HolidayInfoAdd;
+import com.fpt.hr_management.listener.request.holiday_info.HolidayAddRequest;
 import com.fpt.hr_management.listener.request.leave.LeaveAddRequest;
+import com.fpt.hr_management.listener.request.leave.LeaveUpdateRequest;
 import com.fpt.hr_management.listener.response.leave.LeaveListGetAllResponse;
 
 @Controller
 @RequestMapping("api/employee/leave")
 public class LeaveController extends AccountLogin {
 	private LeaveImpl service = new LeaveImpl();
+	private HolidayInfoAdd serviceHoliday = new HolidayInfoAdd();
 
 	@RequestMapping(value = "/get")
 	public String getListEmployeeLeave(HttpSession session, Model model) {
 		if (session.getAttribute("account") == null) {
 			return "redirect:/api/account/login";
 		}
+
 		List<LeaveListGetAllResponse> listEmployeeLeave = new ArrayList<LeaveListGetAllResponse>();
 		listEmployeeLeave = service.leaveListGetAll();
 		int count = 0;
@@ -38,12 +44,69 @@ public class LeaveController extends AccountLogin {
 				count++;
 			}
 		}
-		System.out.println("count: " + count);
 		model.addAttribute("count", count);
 		model.addAttribute("listEmployeeLeave", listEmployeeLeave);
 		model.addAttribute("roleId", userAuthen.getRoleId());
 		model.addAttribute("roleName", userAuthen.getRoleName());
-		return "/employee/leave";
+		String employeeLeave = "/employee/leave";
+		String profile = "redirect:/api/employee/update/" + userAuthen.getUser_id();
+		String[] str = { employeeLeave, profile };
+		return str[0];
+	}
+
+	@RequestMapping(value = "/accept/{id}")
+	public String doUpdateLeaveAccept(@PathVariable("id") int id, HttpSession session, Model model) {
+		if (session.getAttribute("account") == null) {
+			return "redirect:/api/account/login";
+		}
+
+		int userId = id;
+		System.out.println("userId: " + userId);
+
+		if (userAuthen.getRoleId() == 1 || userAuthen.getRoleId() == 2) {
+			LeaveUpdateRequest request = new LeaveUpdateRequest();
+			try {
+				request.setEmployee_accept(userAuthen.getUsername());
+				request.setAccept_status(1);
+				request.setLast_modifier_by(userAuthen.getUsername());
+				request.setIdRecord(id);
+				service.leaveUpdate(request);
+
+				HolidayAddRequest requestHoliday = new HolidayAddRequest(userAuthen.getUser_id(), 1);
+				serviceHoliday.add(requestHoliday);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} else {
+			model.addAttribute("permission", "Bạn không có quyền thao tác.");
+		}
+
+		return "redirect:/api/employee/leave/get";
+	}
+
+	@RequestMapping(value = "/cancel/{id}")
+	public String doUpdateLeaveCancel(@PathVariable("id") int id, HttpSession session, Model model) {
+		if (session.getAttribute("account") == null) {
+			return "redirect:/api/account/login";
+		}
+
+		if (userAuthen.getRoleId() == 1 || userAuthen.getRoleId() == 2) {
+			LeaveUpdateRequest request = new LeaveUpdateRequest();
+			try {
+				request.setEmployee_accept(userAuthen.getUsername());
+				request.setAccept_status(2);
+				request.setLast_modifier_by(userAuthen.getUsername());
+				request.setIdRecord(id);
+				service.leaveUpdate(request);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			model.addAttribute("permission", "Bạn không có quyền thao tác.");
+		}
+
+		return "redirect:/api/employee/leave/get";
 	}
 
 	@RequestMapping(value = "/add")

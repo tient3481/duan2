@@ -8,9 +8,9 @@ import com.fpt.hr_management.connection.DbConnection;
 
 public class AccountDelete extends AccountValidator {
 
-	private static Connection con = null;
-	private static PreparedStatement pstm = null;
-	private static ResultSet rs = null;
+	private Connection con = null;
+	private PreparedStatement pstm = null;
+	private ResultSet rs = null;
 
 	public void delete(Integer accountId) {
 		String sql = "DELETE FROM user_role where id =?;";

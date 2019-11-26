@@ -21,8 +21,8 @@ import com.fpt.hr_management.daoImpl.authentication.AuthenticationAccount;
 import com.fpt.hr_management.listener.request.account.AccountLoginRequest;
 import com.fpt.hr_management.listener.request.account.AccountVerifyPasswordRequest;
 import com.fpt.hr_management.listener.request.account.AccountResetPasswordRequest;
-import com.fpt.hr_management.listener.response.account.AccountRegisterEmployeeGetResponse;
-import com.fpt.hr_management.listener.response.account.AccountRegisterRoleGetResponse;
+import com.fpt.hr_management.listener.response.account.AccountRegisterGetEmployeeNameResponse;
+import com.fpt.hr_management.listener.response.account.AccountRegisterGetRoleResponse;
 import com.fpt.hr_management.model.account.Account;
 
 @Controller
@@ -71,8 +71,8 @@ public class AccountController extends AuthenticationAccount {
 	@RequestMapping("/register")
 	public String register(HttpSession session, Model model) {
 		if (session.getAttribute("account") != null && userAuthen.getRoleId() == ADMIN) {
-			List<AccountRegisterEmployeeGetResponse> listEmployee = service.getListEmployee();
-			List<AccountRegisterRoleGetResponse> listRole = service.getListRole();
+			List<AccountRegisterGetEmployeeNameResponse> listEmployee = service.getListEmployeeName();
+			List<AccountRegisterGetRoleResponse> listRole = service.getListRole();
 			model.addAttribute("employee", listEmployee);
 			model.addAttribute("role", listRole);
 

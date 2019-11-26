@@ -7,8 +7,8 @@ import com.fpt.hr_management.listener.request.account.AccountLoginRequest;
 import com.fpt.hr_management.listener.request.account.AccountVerifyPasswordRequest;
 import com.fpt.hr_management.listener.request.account.AccountUpdateRequest;
 import com.fpt.hr_management.listener.response.account.AccountInfoGetOneRespone;
-import com.fpt.hr_management.listener.response.account.AccountRegisterEmployeeGetResponse;
-import com.fpt.hr_management.listener.response.account.AccountRegisterRoleGetResponse;
+import com.fpt.hr_management.listener.response.account.AccountRegisterGetEmployeeNameResponse;
+import com.fpt.hr_management.listener.response.account.AccountRegisterGetRoleResponse;
 import com.fpt.hr_management.model.account.Account;
 
 public interface DaoAccount {
@@ -27,7 +27,7 @@ public interface DaoAccount {
 
 	public AccountInfoGetOneRespone accountGetOne(int employee_id);
 
-	public List<AccountRegisterRoleGetResponse> getListRole();
+	public List<AccountRegisterGetRoleResponse> getListRole();
 
-	public List<AccountRegisterEmployeeGetResponse> getListEmployee();
+	public List<AccountRegisterGetEmployeeNameResponse> getListEmployeeName();
 }

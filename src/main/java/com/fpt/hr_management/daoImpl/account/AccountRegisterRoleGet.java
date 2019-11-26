@@ -7,16 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fpt.hr_management.connection.DbConnection;
-import com.fpt.hr_management.listener.response.account.AccountRegisterRoleGetResponse;
+import com.fpt.hr_management.listener.response.account.AccountRegisterGetRoleResponse;
 
 public class AccountRegisterRoleGet {
 	private ResultSet rs;
 	private Statement stm;
 	private Connection con;
-	private List<AccountRegisterRoleGetResponse> listRole = new ArrayList<AccountRegisterRoleGetResponse>();
+	private List<AccountRegisterGetRoleResponse> listRole = new ArrayList<AccountRegisterGetRoleResponse>();
 
-	public List<AccountRegisterRoleGetResponse> getListRole() {
-		AccountRegisterRoleGetResponse role = null;
+	public List<AccountRegisterGetRoleResponse> getListRole() {
+		AccountRegisterGetRoleResponse role = null;
 		String sql = "SELECT id, name from role";
 		try {
 			con = DbConnection.getConnection();
@@ -24,7 +24,7 @@ public class AccountRegisterRoleGet {
 				stm = con.createStatement();
 				rs = stm.executeQuery(sql);
 				while (rs.next()) {
-					role = new AccountRegisterRoleGetResponse();
+					role = new AccountRegisterGetRoleResponse();
 					role.setRoleId(rs.getInt("id"));
 					role.setRoleName(rs.getString("name"));
 

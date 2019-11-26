@@ -8,7 +8,7 @@ import com.fpt.hr_management.daoImpl.account.AccountDelete;
 import com.fpt.hr_management.daoImpl.account.AccountGetOne;
 import com.fpt.hr_management.daoImpl.account.AccountListGetAll;
 import com.fpt.hr_management.daoImpl.account.AccountLogin;
-import com.fpt.hr_management.daoImpl.account.AccountRegisterEmployeeGet;
+import com.fpt.hr_management.daoImpl.account.AccountRegisterEmployeeGetName;
 import com.fpt.hr_management.daoImpl.account.AccountRegisterRoleGet;
 import com.fpt.hr_management.daoImpl.account.AccountResetPassword;
 import com.fpt.hr_management.daoImpl.account.AccountUpdate;
@@ -17,8 +17,8 @@ import com.fpt.hr_management.listener.request.account.AccountLoginRequest;
 import com.fpt.hr_management.listener.request.account.AccountVerifyPasswordRequest;
 import com.fpt.hr_management.listener.request.account.AccountUpdateRequest;
 import com.fpt.hr_management.listener.response.account.AccountInfoGetOneRespone;
-import com.fpt.hr_management.listener.response.account.AccountRegisterEmployeeGetResponse;
-import com.fpt.hr_management.listener.response.account.AccountRegisterRoleGetResponse;
+import com.fpt.hr_management.listener.response.account.AccountRegisterGetEmployeeNameResponse;
+import com.fpt.hr_management.listener.response.account.AccountRegisterGetRoleResponse;
 import com.fpt.hr_management.model.account.Account;
 
 public class AccountImpl implements DaoAccount {
@@ -53,13 +53,13 @@ public class AccountImpl implements DaoAccount {
 		return service.info(employeeId);
 	}
 
-	public List<AccountRegisterRoleGetResponse> getListRole() {
+	public List<AccountRegisterGetRoleResponse> getListRole() {
 		AccountRegisterRoleGet service = new AccountRegisterRoleGet();
 		return service.getListRole();
 	}
 
-	public List<AccountRegisterEmployeeGetResponse> getListEmployee() {
-		AccountRegisterEmployeeGet service = new AccountRegisterEmployeeGet();
+	public List<AccountRegisterGetEmployeeNameResponse> getListEmployeeName() {
+		AccountRegisterEmployeeGetName service = new AccountRegisterEmployeeGetName();
 		return service.getListEmployee();
 	}
 

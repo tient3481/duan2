@@ -37,6 +37,14 @@ public class DepartmentEmployeeGetOne {
 					employeeInfo.setDepartmentPhone(rs.getString("departmentPhone"));
 					employeeInfo.setDepartmentLocation(rs.getString("departmentLocation"));
 					employeeInfo.setPositionName(rs.getString("positionName"));
+					if (rs.getString("startDate") == null) {
+						employeeInfo.setStartDateName("Không xác định.");
+					}
+
+					if (rs.getString("endDate") == null) {
+						employeeInfo.setEndDateName("Không xác định");
+					}
+
 					employeeInfo.setStart_date(rs.getString("startDate"));
 					employeeInfo.setEnd_date(rs.getString("endDate"));
 
@@ -48,7 +56,10 @@ public class DepartmentEmployeeGetOne {
 					list.add(employeeInfo);
 
 				}
-				System.out.println(employeeInfo.toString());
+				if (list.size() > 0) {
+					System.out.println(employeeInfo.toString());
+				}
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

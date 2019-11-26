@@ -94,9 +94,19 @@
 
 		<!-- Sidebar -->
 		<ul class="sidebar navbar-nav">
-			<li class="nav-item active"><a class="nav-link"
-				href="index.html"> <i class="fas fa-fw fa-home"></i> <span>Dashboard</span>
-			</a></li>
+			<c:if test="${roleId ==1}">
+				<li class="nav-item active"><a class="nav-link"
+					href="${pageContext.request.contextPath}/api/employee/get"> <i
+						class="fas fa-fw fa-home"></i> <span>Home</span>
+				</a></li>
+			</c:if>
+
+			<c:if test="${roleId !=1}">
+				<li class="nav-item active"><a class="nav-link"
+					href="${pageContext.request.contextPath}/api/employee/update/${accountId}">
+						<i class="fas fa-fw fa-home"></i> <span>Home</span>
+				</a></li>
+			</c:if>
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"

@@ -12,7 +12,7 @@ public class EmployeeAdd {
 		Connection con = null;
 		PreparedStatement pstm = null;
 
-		String sql = "INSERT INTO employee(first_name, middle_name, last_name, full_name, phone, email, dob, address, sex, note, created_by, manager_id) VALUE(?,?,?,?,?,?,?,?,?,?,?,?);";
+		String sql = "INSERT INTO employee(first_name, middle_name, last_name, full_name, phone, email, dob, address, sex, start_date, employee_type_id, note, created_by, manager_id) VALUE(?,?,?,?,?,?,?,?,?,NOW(),?,?,?,?);";
 		try {
 			con = DbConnection.getConnection();
 			if (con != null && sql != null) {
@@ -26,14 +26,13 @@ public class EmployeeAdd {
 				pstm.setDate(7, emp.getDob());
 				pstm.setString(8, emp.getAddress());
 				pstm.setInt(9, emp.getSex());
-				pstm.setString(10, emp.getNote());
-				pstm.setString(11, emp.getCreated_by());
-				pstm.setInt(12, emp.getManager_id());
+				pstm.setInt(10, emp.getEmployee_type_id());
+				pstm.setString(11, emp.getNote());
+				pstm.setString(12, emp.getCreated_by());
+				pstm.setInt(13, emp.getManager_id());
 
-				int countRecord = pstm.executeUpdate();
-				if (countRecord > 0) {
-					return;
-				}
+				pstm.executeUpdate();
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -42,4 +41,12 @@ public class EmployeeAdd {
 		}
 
 	}
+
+//	public static void main(String[] args) {
+//		EmployeeAdd main = new EmployeeAdd();
+//		EmployeeAddRequest request = new EmployeeAddRequest();
+//		request.setAddress("hanoi");
+//		request.setEmployee_type_id(1);
+//		main.add(request);
+//	}
 }

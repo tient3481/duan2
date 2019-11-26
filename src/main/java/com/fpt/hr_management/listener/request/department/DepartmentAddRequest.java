@@ -1,28 +1,26 @@
 package com.fpt.hr_management.listener.request.department;
 
-public class DepartmentAddRequest {
+import com.fpt.hr_management.model.BaseEntity;
+
+public class DepartmentAddRequest extends BaseEntity {
 
 	private int id;
 	private String name;
 	private String phone;
 	private String location;
-	private String created_by;
-	private String last_modifier_date;
-	private String last_modifier_by;
 
 	public DepartmentAddRequest() {
 		super();
 	}
 
 	public DepartmentAddRequest(int id, String name, String phone, String location, String created_by,
-			String last_modifier_date, String last_modifier_by) {
+			String last_modifier_by) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.phone = phone;
 		this.location = location;
 		this.created_by = created_by;
-		this.last_modifier_date = last_modifier_date;
 		this.last_modifier_by = last_modifier_by;
 	}
 

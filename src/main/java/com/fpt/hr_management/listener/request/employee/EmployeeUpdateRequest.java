@@ -19,7 +19,6 @@ public class EmployeeUpdateRequest extends BaseRequest {
 	private Date end_date;
 	private int employee_type_id;
 	private int status;
-	private long base_salary;
 	private String note;
 
 	public EmployeeUpdateRequest() {
@@ -28,7 +27,7 @@ public class EmployeeUpdateRequest extends BaseRequest {
 
 	public EmployeeUpdateRequest(int id, String first_name, String middle_name, String last_name, String phone,
 			String email, Date dob, String address, int sex, Date employee_date, Date end_date, int employee_type_id,
-			int status, long base_salary, String note, String last_modifier_by) {
+			int status, String note, String last_modifier_by) {
 		super();
 		this.id = id;
 		this.first_name = first_name;
@@ -43,7 +42,6 @@ public class EmployeeUpdateRequest extends BaseRequest {
 		this.end_date = end_date;
 		this.employee_type_id = employee_type_id;
 		this.status = status;
-		this.base_salary = base_salary;
 		this.note = note;
 		this.last_modifier_by = last_modifier_by;
 	}
@@ -152,14 +150,6 @@ public class EmployeeUpdateRequest extends BaseRequest {
 		this.status = status;
 	}
 
-	public long getBase_salary() {
-		return base_salary;
-	}
-
-	public void setBase_salary(long base_salar) {
-		this.base_salary = base_salar;
-	}
-
 	public String getNote() {
 		return note;
 	}
@@ -176,8 +166,7 @@ public class EmployeeUpdateRequest extends BaseRequest {
 				.append(", phone=").append(phone).append(", email=").append(email).append(", dob=").append(dob)
 				.append(", address=").append(address).append(", sex=").append(sex).append(", employee_date=")
 				.append(employee_date).append(", end_date=").append(end_date).append(", employee_type_id=")
-				.append(employee_type_id).append(", status=").append(status).append(", base_salary=")
-				.append(base_salary).append(", note=").append(note).append("]");
+				.append(employee_type_id).append(", status=").append(status).append(", note=").append(note).append("]");
 		return builder.toString();
 	}
 

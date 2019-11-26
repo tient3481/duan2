@@ -21,7 +21,6 @@
 <link
 	href="https://blackrockdigital.github.io/startbootstrap-sb-admin/css/sb-admin.css"
 	rel="stylesheet" type="text/css">
-
 </head>
 
 <body id="page-top">
@@ -71,9 +70,12 @@
 
 		<!-- Sidebar -->
 		<ul class="sidebar navbar-nav">
-			<li class="nav-item active"><a class="nav-link"
-				href="index.html"> <i class="fas fa-fw fa-home"></i> <span>Dashboard</span>
-			</a></li>
+			<c:if test="${roleId == 1}">
+				<li class="nav-item active"><a class="nav-link"
+					href="${pageContext.request.contextPath}/api/employee/get"> <i
+						class="fas fa-fw fa-home"></i> <span>Home</span>
+				</a></li>
+			</c:if>
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -119,7 +121,6 @@ ${pageContext.request.contextPath}/api/employee/checkin">Thông
 						href="
 ${pageContext.request.contextPath}/api/employee/checkin">Thông
 						tin nhân thân</a>
-
 					<div class="dropdown-divider"></div>
 
 				</div></li>
@@ -172,7 +173,8 @@ ${pageContext.request.contextPath}/api/login">Danh
 		<!--slide bar  -->
 
 		<!-- Content -->
-		<div class="container">
+		<div class="container-fluid"
+			style="padding-left: 100px; padding-right: 100px;">
 			<div class="row my-4">
 				<div style="width: 100%">
 					<ul class="nav nav-tabs">
@@ -185,10 +187,12 @@ ${pageContext.request.contextPath}/api/login">Danh
 						<li class="nav-item"><a href="" data-target="#skill"
 							data-toggle="tab" class="nav-link">Thông tin kỹ năng</a></li>
 
-						<li class="nav-item"><a href="" data-target="#leave"
-							data-toggle="tab" class="nav-link">Thông tin nghỉ phép</a></li>
+						<li class="nav-item"><a
+							href="${pageContext.request.contextPath}/api/employee/leave/get"
+							data-target="#leave" data-toggle="tab" class="nav-link">Thông
+								tin nghỉ phép</a></li>
 
-						<li class="nav-item"><a href="" data-target="#family"
+						<li class="nav-item"><a href="" data-target="#rp"
 							data-toggle="tab" class="nav-link">Thông tin nhân thân</a></li>
 					</ul>
 					<div class="tab-content py-4">
@@ -196,14 +200,14 @@ ${pageContext.request.contextPath}/api/login">Danh
 							<form action="${pageContext.request.contextPath}/api/employee">
 
 								<c:forEach var="infoEmployee" items="${infoEmployee}">
-									<div class="form-group row">
+									<%-- 				<div class="form-group row">
 										<label class="col-lg-3 col-form-label form-control-label">User
 											ID</label>
 										<div class="col-lg-9">
 											<input name="id" class="form-control" type="text"
 												value="${infoEmployee.getId()}" readonly="readonly">
 										</div>
-									</div>
+									</div> --%>
 
 									<div class="form-group row">
 										<label class="col-lg-3 col-form-label form-control-label">First
@@ -243,10 +247,18 @@ ${pageContext.request.contextPath}/api/login">Danh
 									<div class="form-group row">
 										<label class="col-lg-3 col-form-label form-control-label">Gender</label>
 										<fieldset data-role="controlgroup">
-											<label class="col-lg-9" for="male">Male</label> <input
-												type="radio" name="gender" value="0" checked> <label
-												class="col-lg-9" for="female">Female</label> <input
-												type="radio" name="gender" value="1">
+											<c:if test="${infoEmployee.getSex() == 0}">
+												<label class="col-lg-9" for="male">Male</label>
+												<input type="radio" name="gender" value="0"
+													checked="checked">
+											</c:if>
+
+											<c:if test="${infoEmployee.getSex() == 1}">
+												<label class="col-lg-9" for="female">Female</label>
+												<input type="radio" name="gender" value="1"
+													checked="checked">
+											</c:if>
+
 										</fieldset>
 
 									</div>
@@ -320,15 +332,6 @@ ${pageContext.request.contextPath}/api/login">Danh
 									</div>
 
 									<div class="form-group row">
-										<label class="col-lg-3 col-form-label form-control-label">Base
-											salary</label>
-										<div class="col-lg-9">
-											<input name="base_salary" class="form-control" type="text"
-												value="${infoEmployee.getBase_salary()}">
-										</div>
-									</div>
-
-									<div class="form-group row">
 										<label class="col-lg-3 col-form-label form-control-label">Description</label>
 										<div class="col-lg-9">
 											<input name="note" class="form-control" type="text"
@@ -336,51 +339,104 @@ ${pageContext.request.contextPath}/api/login">Danh
 										</div>
 									</div>
 
-									<div class="form-group row">
-										<label class="col-lg-3 col-form-label form-control-label"></label>
-										<div class="col-lg-9">
-											<input type="submit" name="updateAccount"
-												class="btn btn-primary" value="Save Changes">
-										</div>
-									</div>
-
 								</c:forEach>
+
+								<div class="form-group row">
+									<label class="col-lg-3 col-form-label form-control-label"></label>
+									<div class="col-lg-9">
+										<button type="submit" name="updateAccount"
+											class="btn btn-outline-success">Save</button>
+
+									</div>
+								</div>
+
+								<c:if test="${not empty message}">
+									<div class="alert alert-${alerted}" role="alert">
+										Thông báo! <a href="#" class="alert-link"> ${message} </a>
+									</div>
+								</c:if>
 							</form>
 						</div>
 
 						<!-- ACCOUNT DEPARTMENT INFO -->
 						<div class="tab-pane" id="department">
+							<c:if test="${listEmployeeDepartment.size() > 0}">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col">Employee name</th>
+											<th scope="col">Employee type</th>
+											<th scope="col">Department name</th>
+											<th scope="col">Department phone</th>
+											<th scope="col">Department location</th>
+											<th scope="col">Position name</th>
+											<th scope="col">Start date</th>
+											<th scope="col">End date</th>
+											<c:if test="${roleId == 1 || roleId == 2}">
+												<th scope="row"
+													style="padding-left: 200px; margin-bottom: 20px;">Thao
+													tác</th>
 
-							<table class="table">
-								<thead>
-									<tr>
-										<th scope="col">Employee name</th>
-										<th scope="col">Employee type</th>
-										<th scope="col">Department name</th>
-										<th scope="col">Department phone</th>
-										<th scope="col">Department location</th>
-										<th scope="col">Position name</th>
-										<th scope="col">Start date</th>
-										<th scope="col">End date</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
+												<c:if test="${listEmployeeDepartment.size() >= 0}">
+													<th><a
+														href="${pageContext.request.contextPath}/api/employee/department/add/${idAccount}"><button
+																type="button" style="float: right;"
+																class="btn btn-success px-3">
+																<i class="fa fa-plus" aria-hidden="true"></i>
+															</button></a></th>
+												</c:if>
+											</c:if>
+										</tr>
+									</thead>
+									<tbody>
 										<c:forEach var="list" items="${listEmployeeDepartment}">
-											<td scope="row">${list.getEmployeeName()}</td>
-											<td scope="row">${list.getEmployeeTypeName()}</td>
-											<td scope="row">${list.getDepartmentName()}</td>
-											<td scope="row">${list.getDepartmentPhone()}</td>
-											<td scope="row">${list.getDepartmentLocation()}</td>
-											<td scope="row">${list.getPositionName()}</td>
-											<td scope="row">${list.getStart_date()}</td>
-											<td scope="row">${list.getEnd_date()}</td>
+											<tr>
+												<td scope="row">${list.getEmployeeName()}</td>
+												<td scope="row">${list.getEmployeeTypeName()}</td>
+												<td scope="row">${list.getDepartmentName()}</td>
+												<td scope="row">${list.getDepartmentPhone()}</td>
+												<td scope="row">${list.getDepartmentLocation()}</td>
+												<td scope="row">${list.getPositionName()}</td>
+												<c:choose>
+													<c:when test="${list.getStart_date() != null}">
+														<td scope="row">${list.getStart_date()}</td>
+													</c:when>
+													<c:otherwise>
+														<td scope="row">${list.getStartDateName()}</td>
+													</c:otherwise>
+												</c:choose>
+
+												<c:choose>
+													<c:when test="${list.getEnd_date() != null}">
+														<td scope="row">${list.getEnd_date()}</td>
+													</c:when>
+
+													<c:otherwise>
+														<td scope="row">${list.getEndDateName()}</td>
+													</c:otherwise>
+												</c:choose>
+												<c:if test="${roleId == 1 || roleId == 2}">
+													<td scope="row"><a href="#"><button type="button"
+																style="float: right; margin-right: 20px;"
+																class="btn btn-warning">
+																<i class="fas fa-edit" aria-hidden="true"></i>
+															</button></a> <a
+														href="${pageContext.request.contextPath}/api/employee/department/delete/${list.getEmployeeDepartmentId()}"><button
+																type="submit" style="float: right; margin-right: 35px;"
+																class="btn btn-danger">
+																<i class="fas fa-times" aria-hidden="true"></i>
+															</button></a></td>
+
+												</c:if>
+											</tr>
 										</c:forEach>
-									</tr>
-								</tbody>
-							</table>
+									</tbody>
+
+								</table>
+							</c:if>
 
 						</div>
+
 						<!-- ACCOUNT SKILL -->
 						<div class="tab-pane" id="skill">
 
@@ -411,7 +467,270 @@ ${pageContext.request.contextPath}/api/login">Danh
 
 						</div>
 
+						<div class="tab-pane" id="leave">
 
+							<table class="table table-bordered" id="dataTable">
+								<thead>
+									<c:if test="${roleId == 1 || roleId == 2}">
+									</c:if>
+									<tr>
+										<th>Tên</th>
+										<th>Loại nghỉ phép</th>
+										<th>Ngày bắt đầu</th>
+										<th>Ngày kết thúc</th>
+										<th>Thời gian bắt đầu</th>
+										<th>Thời gian kết thúc</th>
+										<th>Trạng thái</th>
+										<th>Người duyệt</th>
+										<c:if test="${list.getAccept_status() == 0}">
+											<th>Thao tác</th>
+										</c:if>
+
+									</tr>
+								</thead>
+								<c:forEach var="list" items="${listEmployeeLeave}">
+									<tbody>
+										<tr>
+											<td>${list.getEmployeeName()}</td>
+											<td>${list.getReasonName()}</td>
+											<td>${list.getStart_date()}</td>
+											<td>${list.getEnd_date()}</td>
+											<td>${list.getStart_time()}</td>
+											<td>${list.getEnd_time()}</td>
+											<c:if test="${list.getAccept_status() == 1}">
+												<td style="color: green;">${list.getAcceptStatusName()}</td>
+											</c:if>
+
+											<c:if test="${list.getAccept_status() == 0}">
+												<td style="color: #FFD700;">${list.getAcceptStatusName()}</td>
+											</c:if>
+
+											<c:if test="${list.getAccept_status() == 2}">
+												<td style="color: red;">${list.getAcceptStatusName()}</td>
+											</c:if>
+											<td>${list.getEmployee_accept()}</td>
+											<c:if test="${(roleId == 1 || roleId == 2)}">
+												<c:if test="${list.getAccept_status() == 0}">
+													<td><a
+														href="${pageContext.request.contextPath}/api/employee/leave/accept/${list.getId()}"
+														class="btn btn-success" role="submit">Accept </a> <a
+														href="${pageContext.request.contextPath}/api/employee/leave/cancel/${list.getId()}"
+														class="btn btn-danger" role="submit">Cancel </a></td>
+												</c:if>
+											</c:if>
+										</tr>
+									</tbody>
+								</c:forEach>
+
+							</table>
+
+						</div>
+
+						<div class="tab-pane" id="leave">
+
+							<table class="table table-bordered" id="dataTable">
+								<thead>
+									<c:if test="${roleId == 1 || roleId == 2}">
+									</c:if>
+									<tr>
+										<th>Tên</th>
+										<th>Loại nghỉ phép</th>
+										<th>Ngày bắt đầu</th>
+										<th>Ngày kết thúc</th>
+										<th>Thời gian bắt đầu</th>
+										<th>Thời gian kết thúc</th>
+										<th>Trạng thái</th>
+										<th>Người duyệt</th>
+										<c:if test="${list.getAccept_status() == 0}">
+											<th>Thao tác</th>
+										</c:if>
+
+									</tr>
+								</thead>
+								<c:forEach var="list" items="${listEmployeeLeave}">
+									<tbody>
+										<tr>
+											<td>${list.getEmployeeName()}</td>
+											<td>${list.getReasonName()}</td>
+											<td>${list.getStart_date()}</td>
+											<td>${list.getEnd_date()}</td>
+											<td>${list.getStart_time()}</td>
+											<td>${list.getEnd_time()}</td>
+											<c:if test="${list.getAccept_status() == 1}">
+												<td style="color: green;">${list.getAcceptStatusName()}</td>
+											</c:if>
+
+											<c:if test="${list.getAccept_status() == 0}">
+												<td style="color: #FFD700;">${list.getAcceptStatusName()}</td>
+											</c:if>
+
+											<c:if test="${list.getAccept_status() == 2}">
+												<td style="color: red;">${list.getAcceptStatusName()}</td>
+											</c:if>
+											<td>${list.getEmployee_accept()}</td>
+											<c:if test="${(roleId == 1 || roleId == 2)}">
+												<c:if test="${list.getAccept_status() == 0}">
+													<td><a
+														href="${pageContext.request.contextPath}/api/employee/leave/accept/${list.getId()}"
+														class="btn btn-success" role="submit">Accept </a> <a
+														href="${pageContext.request.contextPath}/api/employee/leave/cancel/${list.getId()}"
+														class="btn btn-danger" role="submit">Cancel </a></td>
+												</c:if>
+											</c:if>
+										</tr>
+									</tbody>
+								</c:forEach>
+
+							</table>
+
+						</div>
+						<div class="tab-pane" id="rp">
+							<form action="${pageContext.request.contextPath}/api/employee">
+								<c:if test="${listRPEmployee.size() == 0}">
+									<c:if test="${listRPEmployee.size() == 0}">
+										<a href="#"><button type="button" style="float: right;"
+												class="btn btn-success px-3">
+												<i class="fa fa-plus" aria-hidden="true"></i>
+											</button></a>
+									</c:if>
+								</c:if>
+
+								<c:forEach var="list" items="${listRPEmployee}">
+									<div class="card mb-3">
+										<div class="card-header">
+											<i class="fas fa-table"> Thông tin nhân thân</i>
+										</div>
+										<div class="card-body">
+											<!-- Grid row -->
+											<div class="form-row">
+												<!-- Grid column -->
+												<div class="col-md-6">
+													<!-- Material input -->
+													<div class="md-form form-group">
+														<label><b>Họ và tên bố/ mẹ</b></label>
+														<div class="form-group">
+															<div class="form-label-group">
+																<input type="text" class="form-control" id="1"
+																	value="${list.getDad_or_mother_name()}"
+																	placeholder="Họ và tên"> <label for="1">
+																	Name</label>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- Grid column -->
+
+												<!-- Grid column -->
+												<div class="col-md-3">
+													<!-- Material input -->
+													<div class="md-form form-group">
+														<div class="form-group">
+															<label><b>Nghề nghiệp bố/ mẹ</b></label>
+															<div class="form-label-group">
+																<input type="text" class="form-control" id="2"
+																	value="${list.getDad_or_mother_job()}"
+																	placeholder="Nghề nghiệp"> <label for="2">
+																	Job</label>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- Grid column -->
+												<div class="col-md-3">
+													<!-- Material input -->
+													<div class="md-form form-group">
+														<div class="form-group">
+															<label><b>Số điện thoại</b></label>
+															<div class="form-label-group">
+																<input type="text" class="form-control" id="3"
+																	value="${list.getDad_or_mother_phone()}"
+																	placeholder="Số điện thoại"> <label for="3">
+																	Phone</label>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<!-- Material input -->
+													<div class="md-form form-group">
+														<div class="form-group">
+															<label><b>Địa chỉ</b></label>
+															<div class="form-label-group">
+																<input type="text" class="form-control" id="4"
+																	value="${list.getDad_or_mother_address()}"
+																	placeholder="Địa chỉ"> <label for="4">
+																	Address</label>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<!-- Material input -->
+													<div class="md-form form-group">
+														<label><b>Họ và tên anh/ chị/ em</b></label>
+														<div class="form-group">
+															<div class="form-label-group">
+																<input type="text" class="form-control" id="5"
+																	value="${list.getBs_name()}" placeholder="Họ và tên">
+																<label for="5"> Brother or Sister name</label>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<!-- Material input -->
+													<div class="md-form form-group">
+														<div class="form-group">
+															<label><b>Nghề nghiệp anh/ chị/ em</b></label>
+															<div class="form-label-group">
+																<input type="text" class="form-control" id="6"
+																	value="${list.getBs_phone()}" placeholder="Nghề nghiệp">
+																<label for="6">Brother or Sister phone</label>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-3">
+													<!-- Material input -->
+													<div class="md-form form-group">
+														<div class="form-group">
+															<label><b>Số điện thoại</b></label>
+															<div class="form-label-group">
+																<input type="text" class="form-control" id="7"
+																	value="${list.getBs_phone()}"
+																	placeholder="Số điện thoại"> <label for="7">Brother
+																	or Sister phone</label>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-12">
+													<!-- Material input -->
+													<div class="md-form form-group">
+														<div class="form-group">
+															<label><b>Địa chỉ</b></label>
+															<div class="form-label-group">
+																<input type="text" class="form-control" id="8"
+																	value="${list.getBs_address()}" placeholder="Địa chỉ">
+																<label for="8">Brother or Sister address</label>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<button style="margin: auto;" type="submit"
+													class="btn btn-outline-success">Save</button>
+											</div>
+										</div>
+									</div>
+
+								</c:forEach>
+
+
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -427,27 +746,6 @@ ${pageContext.request.contextPath}/api/login">Danh
 		</div>
 	</div>
 
-	<!--LOG OUT -->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">Ã</span>
-					</button>
-				</div>
-				<div class="modal-body"></div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
-				</div>
-			</div>
-		</div>
-	</div>
 	<!-- Bootstrap core JavaScript-->
 	<script
 		src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/jquery/jquery.min.js"></script>

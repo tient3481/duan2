@@ -33,6 +33,5 @@ public class PositionUpdate {
 			DbConnection.close(con, pstm, null, null);
 		}
 	}
-	
-	
+
 }

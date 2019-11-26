@@ -13,6 +13,7 @@ public class LeaveAddRequest extends BaseRequest {
 	private Time start_time;
 	private Time end_time;
 	private String note;
+	private int accept_status;
 
 	public LeaveAddRequest() {
 
@@ -88,13 +89,21 @@ public class LeaveAddRequest extends BaseRequest {
 		this.note = note;
 	}
 
+	public int getAccept_status() {
+		return accept_status;
+	}
+
+	public void setAccept_status(int accept_status) {
+		this.accept_status = accept_status;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("LeaveAddRequest [employee_id=").append(employee_id).append(", reason_id=").append(reason_id)
 				.append(", start_date=").append(start_date).append(", end_date=").append(end_date)
 				.append(", start_time=").append(start_time).append(", end_time=").append(end_time).append(", note=")
-				.append(note).append("]");
+				.append(note).append(", accept_status=").append(accept_status).append("]");
 		return builder.toString();
 	}
 

@@ -47,7 +47,7 @@ public class EmployeeListGetAll {
 						listEmployee.add(objEmp);
 					}
 
-					System.out.println();
+					System.out.println(listEmployee.toString());
 				}
 			}
 

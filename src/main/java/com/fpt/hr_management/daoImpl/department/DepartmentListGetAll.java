@@ -7,34 +7,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fpt.hr_management.connection.DbConnection;
-import com.fpt.hr_management.model.department.Department;
+import com.fpt.hr_management.listener.response.department.DepartmentListGetAllResponse;
 
 public class DepartmentListGetAll {
 
-	public List<Department> get() {
+	private List<DepartmentListGetAllResponse> listDepartment;
+
+	public List<DepartmentListGetAllResponse> get() {
 		String sql = "SELECT * FROM department;";
 		Connection con = null;
 		Statement stm = null;
 		ResultSet rs = null;
-		List<Department> listDepartment = null;
 		try {
 			con = DbConnection.getConnection();
 			stm = con.createStatement();
 			if (con != null && stm != null && sql != null) {
 				rs = stm.executeQuery(sql);
-				listDepartment = new ArrayList<Department>();
+				listDepartment = new ArrayList<DepartmentListGetAllResponse>();
 				if (rs != null) {
-					Department objDpm = null;
+					DepartmentListGetAllResponse objDpm = null;
 					while (rs.next()) {
-						objDpm = new Department();
+						objDpm = new DepartmentListGetAllResponse();
 						objDpm.setId(rs.getInt("id"));
 						objDpm.setName(rs.getString("name"));
 						objDpm.setPhone(rs.getString("phone"));
 						objDpm.setLocation(rs.getString("location"));
-						objDpm.setCreated_date(rs.getString("created_date"));
-						objDpm.setCreated_by(rs.getString("created_by"));
-						objDpm.setLast_modifier_date(rs.getString("last_modifier_date"));
-						objDpm.setLast_modifier_by(rs.getString("last_modifier_by"));
 
 						listDepartment.add(objDpm);
 					}

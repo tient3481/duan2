@@ -62,14 +62,12 @@ public class EmployeeGetOne {
 
 					String employee_date = rs.getString("employee_date");
 					String end_date = rs.getString("end_date");
-					long base_salary = rs.getLong("base_salary");
 					String note = rs.getString("note");
 
 					user_manager_name = findName(request.getId());
 
 					employeeInfo = new EmployeeGetOneResponse(id, first_name, middle_name, last_name, phone, email, dob,
-							address, gender, employee_date, end_date, type_name, status_name, base_salary,
-							user_manager_name, note);
+							address, gender, employee_date, end_date, type_name, status_name, user_manager_name, note);
 					listInfo.add(employeeInfo);
 				}
 			}
@@ -98,7 +96,7 @@ public class EmployeeGetOne {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 		return name;
 	}
 

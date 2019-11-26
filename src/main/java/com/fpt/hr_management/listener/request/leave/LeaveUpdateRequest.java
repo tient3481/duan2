@@ -1,11 +1,12 @@
 package com.fpt.hr_management.listener.request.leave;
 
-public class LeaveUpdateRequest {
+import com.fpt.hr_management.listener.response.BaseRequest;
+
+public class LeaveUpdateRequest extends BaseRequest {
 
 	private int idRecord;
 	private int accept_status;
 	private String employee_accept;
-	private String last_modifier_by;
 
 	public LeaveUpdateRequest() {
 

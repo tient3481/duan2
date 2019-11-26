@@ -1,3 +1,4 @@
+<%@page import="java.util.Map"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -83,8 +84,8 @@
 					<a class="dropdown-item" href="#">Settings</a> <a
 						class="dropdown-item" href="#">Activity Log</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#" data-toggle="modal"
-						data-target="#logoutModal">Logout</a>
+					<a class="dropdown-item"
+						href="${pageContext.request.contextPath}/api/account/logout">Logout</a>
 				</div></li>
 		</ul>
 
@@ -94,9 +95,20 @@
 
 		<!-- Sidebar -->
 		<ul class="sidebar navbar-nav">
-			<li class="nav-item active"><a class="nav-link"
-				href="index.html"> <i class="fas fa-fw fa-home"></i> <span>Dashboard</span>
-			</a></li>
+			<c:if test="${roleId ==1}">
+				<li class="nav-item active"><a class="nav-link"
+					href="${pageContext.request.contextPath}/api/employee/get"> <i
+						class="fas fa-fw fa-home"></i> <span>Home</span>
+				</a></li>
+			</c:if>
+
+			<c:if test="${roleId !=1}">
+				<li class="nav-item active"><a class="nav-link"
+					href="${pageContext.request.contextPath}/api/employee/update/${accountId}">
+						<i class="fas fa-fw fa-home"></i> <span>Home</span>
+				</a></li>
+			</c:if>
+
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -286,50 +298,72 @@ ${pageContext.request.contextPath}/api/login">Danh
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"> Employee</i>
+						<i class="fas fa-table"> Employee</i> <a href="#"
+							class="btn btn-success" style="float: right;"><span
+							class="glyphicon glyphicon-plus">+</span> </a>
 
 					</div>
-					<div class="card-body">
-						<div class="table-responsive">
-							<table class="table table-bordered" id="dataTable">
-								<thead>
-									<tr>
-										<th>Tên</th>
-										<th>Số điện thoại</th>
-										<th>Email</th>
-										<th>Ngày sinh</th>
-										<th>Địa chỉ</th>
-										<th>Giới tính</th>
-										<th>Ngày vào công ty</th>
-										<th>Ngày nhận chính thức</th>
-
-									</tr>
-								</thead>
-								<c:forEach var="list" items="${employeeList}">
-									<tbody>
+					<form action="${pageContext.request.contextPath}/api/employee">
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-bordered" id="dataTable">
+									<thead>
 										<tr>
-											<td><a
-												href="${pageContext.request.contextPath}/api/employee/update/${list.getId()}">
-													${list.getFull_name()} </a></td>
-											<td>${list.getPhone()}</td>
-											<td>${list.getEmail()}</td>
-											<td>${list.getDob()}</td>
-											<td>${list.getAddress()}</td>
-											<td>${list.getSexName()}</td>
-											<td>${list.getStart_date()}</td>
-											<td>${list.getEmployee_date()}</td>
+											<th>Tên</th>
+											<th>Số điện thoại</th>
+											<th>Email</th>
+											<th>Ngày sinh</th>
+											<th>Địa chỉ</th>
+											<th>Giới tính</th>
+											<th>Ngày vào công ty</th>
+											<th>Ngày nhận chính thức</th>
 											<c:if test="${roleId == 1}">
-												<td><button type="button"
-														class="btn btn-outline-warning">Update</button>
-													<button type="button" class="btn btn-outline-danger">Delete</button></td>
+												<th>Thao tác</th>
 											</c:if>
+
 										</tr>
-									</tbody>
-								</c:forEach>
-							</table>
-							<a>Role name: ${roleName}</a>
+									</thead>
+
+									<c:forEach var="list" items="${employeeList}">
+										<tbody>
+											<tr>
+												<td><a
+													href="${pageContext.request.contextPath}/api/employee/update/${list.getId()}">
+														${list.getFull_name()} </a></td>
+												<td>${list.getPhone()}</td>
+												<td>${list.getEmail()}</td>
+												<td>${list.getDob()}</td>
+												<td>${list.getAddress()}</td>
+												<td>${list.getSexName()}</td>
+												<td>${list.getStart_date()}</td>
+												<td>${list.getEmployee_date()}</td>
+												<c:if test="${roleId == 1}">
+													<td>
+														<button type="button" class="btn btn-outline-warning">Update</button>
+														<a
+														href="${pageContext.request.contextPath}/api/employee/delete/${list.getId()}"><button
+																type="button"
+																onclick="return confirm('Xác nhận xóa nhân viên: ${list.getFull_name()}')"
+																class="btn btn-outline-danger">Delete</button></a>
+													</td>
+
+
+												</c:if>
+											</tr>
+										</tbody>
+									</c:forEach>
+
+								</table>
+								<a>Role name: ${roleName}</a>
+
+								<c:if test="${not empty message}">
+									<div class="alert alert-${alerted}" role="alert">
+										Thông báo! <a href="#" class="alert-link"> ${message} </a>
+									</div>
+								</c:if>
+							</div>
 						</div>
-					</div>
+					</form>
 				</div>
 
 			</div>

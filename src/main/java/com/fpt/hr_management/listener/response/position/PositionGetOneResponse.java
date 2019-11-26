@@ -1,27 +1,29 @@
 package com.fpt.hr_management.listener.response.position;
 
-public class PositionGetOneResponse {
+import com.fpt.hr_management.model.BaseEntity;
 
+public class PositionGetOneResponse extends BaseEntity {
+
+	private int id;
 	private String name;
 	private String description;
-	private String created_date;
-	private String created_by;
-	private String last_modifier_date;
-	private String last_modifier_by;
 
 	public PositionGetOneResponse() {
 
 	}
 
-	public PositionGetOneResponse(String name, String description, String created_date, String created_by,
+	public PositionGetOneResponse(int id, String name, String description, String created_date, String created_by,
 			String last_modifier_date, String last_modifier_by) {
-		super();
 		this.name = name;
 		this.description = description;
-		this.created_date = created_date;
-		this.created_by = created_by;
-		this.last_modifier_date = last_modifier_date;
-		this.last_modifier_by = last_modifier_by;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -75,10 +77,8 @@ public class PositionGetOneResponse {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("PositionGetOneResponse [name=").append(name).append(", description=").append(description)
-				.append(", created_date=").append(created_date).append(", created_by=").append(created_by)
-				.append(", last_modifier_date=").append(last_modifier_date).append(", last_modifier_by=")
-				.append(last_modifier_by).append("]");
+		builder.append("PositionGetOneResponse [id=").append(id).append(", name=").append(name).append(", description=")
+				.append(description).append("]");
 		return builder.toString();
 	}
 
