@@ -3,6 +3,8 @@ package com.fpt.hr_management.daoImpl.authentication;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.fpt.hr_management.daoImpl.account.AccountLogin;
 import com.fpt.hr_management.listener.request.account.AccountLoginRequest;
 
@@ -22,6 +24,14 @@ public class AuthenticationAccount extends AccountLogin {
 
 	public static HashMap<Integer, AuthenticationEntity> getHmAccountPermission() {
 		return hmAccountPermission;
+	}
+
+	public boolean sessionInvalid(HttpSession session) {
+		if (session.getAttribute("account") == null) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public static void main(String[] args) {

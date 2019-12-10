@@ -15,7 +15,7 @@ public class CheckInAdd {
 	public static InfoCheckIn inCheckIn = new InfoCheckIn();
 
 	public void addCheckIn(CheckInAddRequest request) {
-		String sql = "INSERT INTO check_in(user_id, check_in_time, date) VALUES (?,NOW(),NOW());";
+		String sql = "INSERT INTO check_in_history(user_id, check_in_time, date) VALUES (?,NOW(),NOW());";
 		try {
 			con = DbConnection.getConnection();
 			ResultSet rs = null;

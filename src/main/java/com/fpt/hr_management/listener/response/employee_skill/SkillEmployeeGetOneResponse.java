@@ -6,12 +6,14 @@ public class SkillEmployeeGetOneResponse {
 	private String employeeName;
 	private int employee_id;
 	private int skill_id;
-	private String skill_main;
 	private int skill_start;
 	private int skill_end;
 	private int level_id;
 	private String levelName;
 	private String skillName;
+
+	private String skillEndName;
+	private String skillStartName;
 
 	public SkillEmployeeGetOneResponse() {
 
@@ -47,14 +49,6 @@ public class SkillEmployeeGetOneResponse {
 
 	public void setSkill_id(int skill_id) {
 		this.skill_id = skill_id;
-	}
-
-	public String getSkill_main() {
-		return skill_main;
-	}
-
-	public void setSkill_main(String skill_main) {
-		this.skill_main = skill_main;
 	}
 
 	public int getSkill_start() {
@@ -97,15 +91,20 @@ public class SkillEmployeeGetOneResponse {
 		this.skillName = skillName;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("SkillEmployeeGetOneResponse [id=").append(id).append(", employeeName=").append(employeeName)
-				.append(", employee_id=").append(employee_id).append(", skill_id=").append(skill_id)
-				.append(", skill_main=").append(skill_main).append(", skill_start=").append(skill_start)
-				.append(", skill_end=").append(skill_end).append(", level_id=").append(level_id).append(", levelName=")
-				.append(levelName).append(", skillName=").append(skillName).append("]");
-		return builder.toString();
+	public String getSkillEndName() {
+		return skillEndName;
+	}
+
+	public void setSkillEndName(String skillEndName) {
+		this.skillEndName = skillEndName;
+	}
+
+	public String getSkillStartName() {
+		return skillStartName;
+	}
+
+	public void setSkillStartName(String skillStartName) {
+		this.skillStartName = skillStartName;
 	}
 
 }

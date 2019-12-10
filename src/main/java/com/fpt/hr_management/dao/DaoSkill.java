@@ -6,11 +6,11 @@ import com.fpt.hr_management.listener.request.skill.SkillAddRequest;
 import com.fpt.hr_management.listener.request.skill.SkillDeleteRequest;
 import com.fpt.hr_management.listener.request.skill.SkillListGetOneRequest;
 import com.fpt.hr_management.listener.request.skill.SkillUpdateRequest;
-import com.fpt.hr_management.listener.response.skill.SkillListGetAllResponse;
+import com.fpt.hr_management.listener.response.skill.SkillCategoryListGetAllResponse;
 import com.fpt.hr_management.listener.response.skill.SkillListGetOneResponse;
 
 public interface DaoSkill {
-	public List<SkillListGetAllResponse> listSkillGetAll();
+	public List<SkillCategoryListGetAllResponse> listSkillGetAll();
 
 	public List<SkillListGetOneResponse> listSkillGetOne(SkillListGetOneRequest request);
 

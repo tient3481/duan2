@@ -63,11 +63,12 @@ public class EmployeeGetOne {
 					String employee_date = rs.getString("employee_date");
 					String end_date = rs.getString("end_date");
 					String note = rs.getString("note");
-
+					long salary_base = rs.getLong("salary_base");
 					user_manager_name = findName(request.getId());
 
 					employeeInfo = new EmployeeGetOneResponse(id, first_name, middle_name, last_name, phone, email, dob,
-							address, gender, employee_date, end_date, type_name, status_name, user_manager_name, note);
+							address, gender, employee_date, end_date, type_name, status_name, user_manager_name, note,
+							salary_base);
 					listInfo.add(employeeInfo);
 				}
 			}

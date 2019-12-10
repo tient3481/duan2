@@ -1,12 +1,15 @@
+<%@page import="java.util.Map"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="java.io.*,java.util.*, javax.servlet.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<title>XTEL</title>
+<title>XTEL INTERNAL</title>
 
 <link
 	href="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/fontawesome-free/css/all.min.css"
@@ -21,6 +24,7 @@
 <link
 	href="https://blackrockdigital.github.io/startbootstrap-sb-admin/css/sb-admin.css"
 	rel="stylesheet" type="text/css">
+
 </head>
 
 <body id="page-top">
@@ -33,15 +37,6 @@
 		<!-- Navbar Search -->
 		<form
 			class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search for..."
-					aria-label="Search" aria-describedby="basic-addon2">
-				<div class="input-group-append">
-					<button class="btn btn-primary" type="button">
-						<i class="fas fa-search"></i>
-					</button>
-				</div>
-			</div>
 		</form>
 
 		<!-- Navbar -->
@@ -54,8 +49,8 @@
 				<div class="dropdown-menu dropdown-menu-right"
 					aria-labelledby="userDropdown">
 					<a class="dropdown-item"
-						href="${pageContext.request.contextPath}/api/employee/update/${idAccount}">Account
-						info: ${username}</a> <a class="dropdown-item"
+						href="${pageContext.request.contextPath}/api/employee/update/${accountName}">${accountName}-
+						${roleName}</a> <a class="dropdown-item"
 						href="${pageContext.request.contextPath}/api/account/forgot-password">Quên
 						mật khẩu</a>
 					<div class="dropdown-divider"></div>
@@ -70,12 +65,20 @@
 
 		<!-- Sidebar -->
 		<ul class="sidebar navbar-nav">
-			<c:if test="${roleId == 1}">
+			<c:if test="${roleId ==1}">
 				<li class="nav-item active"><a class="nav-link"
 					href="${pageContext.request.contextPath}/api/employee/get"> <i
 						class="fas fa-fw fa-home"></i> <span>Home</span>
 				</a></li>
 			</c:if>
+
+			<c:if test="${roleId !=1}">
+				<li class="nav-item active"><a class="nav-link"
+					href="${pageContext.request.contextPath}/api/employee/update/${accountId}">
+						<i class="fas fa-fw fa-home"></i> <span>Home</span>
+				</a></li>
+			</c:if>
+
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -85,20 +88,18 @@
 					<h6 class="dropdown-header">Danh mục</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/account/login">Tài
-						khoản</a> <a class="dropdown-item"
-						href="
 ${pageContext.request.contextPath}/api/login">Nhóm kỹ
 						năng</a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Kỹ năng</a>
-					<a class="dropdown-item"
+${pageContext.request.contextPath}/api/skill/get">Kỹ
+						năng</a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Phòng
-						ban</a> <a class="dropdown-item"
+${pageContext.request.contextPath}/api/skill/#">Phòng
+						ban </a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Danh mục
-						nghỉ phép</a>
+${pageContext.request.contextPath}/api/skill/#">Danh
+						mục nghỉ phép </a>
+
 					<div class="dropdown-divider"></div>
 
 					<!-- <h6 class="dropdown-header">Other Pages:</h6>
@@ -116,10 +117,10 @@ ${pageContext.request.contextPath}/api/login">Danh mục
 					<h6 class="dropdown-header">Danh mục</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/employee/checkin">Thông
+${pageContext.request.contextPath}/api/employee/update/${accountId}">Thông
 						tin cá nhân</a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/employee/checkin">Thông
+${pageContext.request.contextPath}/api/employee/update/${accountId}">Thông
 						tin nhân thân</a>
 					<div class="dropdown-divider"></div>
 
@@ -158,19 +159,13 @@ ${pageContext.request.contextPath}/api/employee/leave/add">Đăng
 					<h6 class="dropdown-header">Danh mục quản lý</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Danh
+${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 						sách bảng lương</a>
 					<div class="dropdown-divider"></div>
 
-					<!-- <h6 class="dropdown-header">Other Pages:</h6>
-					<a class="dropdown-item" href="404.html">404 Page</a> <a
-						class="dropdown-item" href="blank.html">Blank Page</a> -->
 				</div></li>
-			<!-- 		<li class="nav-item"><a class="nav-link" href="tables.html">
-					<i class="fas fa-fw fa-table"></i> <span>Thông tin chung</span>
-			</a></li> -->
+
 		</ul>
-		<!--slide bar  -->
 
 		<!-- Content -->
 		<div class="container-fluid"
@@ -178,8 +173,12 @@ ${pageContext.request.contextPath}/api/login">Danh
 			<div class="row my-4">
 				<div style="width: 100%">
 					<ul class="nav nav-tabs">
+
+						<li class="nav-item"><a href="" data-target="#account"
+							data-toggle="tab" class="nav-link active">Thông tin tài khoản</a></li>
+
 						<li class="nav-item"><a href="" data-target="#profile"
-							data-toggle="tab" class="nav-link active">Thông tin cơ bản</a></li>
+							data-toggle="tab" class="nav-link">Thông tin cơ bản</a></li>
 
 						<li class="nav-item"><a href="" data-target="#department"
 							data-toggle="tab" class="nav-link">Thông tin phòng ban</a></li>
@@ -194,21 +193,22 @@ ${pageContext.request.contextPath}/api/login">Danh
 
 						<li class="nav-item"><a href="" data-target="#rp"
 							data-toggle="tab" class="nav-link">Thông tin nhân thân</a></li>
+
+
+						<li class="nav-item"><a href="" data-target="#allowance"
+							data-toggle="tab" class="nav-link">Các khoản trợ cấp</a></li>
+
+						<li class="nav-item"><a href="" data-target="#slr"
+							data-toggle="tab" class="nav-link">Xem bảng lương</a></li>
+
 					</ul>
-					<div class="tab-content py-4">
-						<div class="tab-pane active" id="profile">
+					<div class="tab-content py-5">
+						<div class="tab-pane" id="account">Updating</div>
+
+						<div class="tab-pane" id="profile">
 							<form action="${pageContext.request.contextPath}/api/employee">
 
 								<c:forEach var="infoEmployee" items="${infoEmployee}">
-									<%-- 				<div class="form-group row">
-										<label class="col-lg-3 col-form-label form-control-label">User
-											ID</label>
-										<div class="col-lg-9">
-											<input name="id" class="form-control" type="text"
-												value="${infoEmployee.getId()}" readonly="readonly">
-										</div>
-									</div> --%>
-
 									<div class="form-group row">
 										<label class="col-lg-3 col-form-label form-control-label">First
 											name</label>
@@ -339,6 +339,15 @@ ${pageContext.request.contextPath}/api/login">Danh
 										</div>
 									</div>
 
+									<div class="form-group row">
+										<label class="col-lg-3 col-form-label form-control-label">Lương
+											cơ bản</label>
+										<div class="col-lg-9">
+											<input name="base_salary" class="form-control" type="text"
+												value="${infoEmployee.getSalary_base()}">
+										</div>
+									</div>
+
 								</c:forEach>
 
 								<div class="form-group row">
@@ -436,19 +445,17 @@ ${pageContext.request.contextPath}/api/login">Danh
 							</c:if>
 
 						</div>
-
 						<!-- ACCOUNT SKILL -->
 						<div class="tab-pane" id="skill">
 
 							<table class="table">
 								<thead>
 									<tr>
-										<th scope="col">Employee name</th>
-										<th scope="col">Skill name</th>
-										<th scope="col">Skill main</th>
-										<th scope="col">Skill start</th>
-										<th scope="col">Skill end</th>
-										<th scope="col">Level name</th>
+										<th scope="col">Tên nhân viên</th>
+										<th scope="col">Tên kỹ năng</th>
+										<th scope="col">Bắt đầu</th>
+										<th scope="col">Kết thúc</th>
+										<th scope="col">Trình độ</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -456,8 +463,8 @@ ${pageContext.request.contextPath}/api/login">Danh
 										<tr>
 											<td scope="row">${list.getEmployeeName()}</td>
 											<td scope="row">${list.getSkillName()}</td>
-											<td scope="row">${list.getSkill_main()}</td>
 											<td scope="row">${list.getSkill_start()}</td>
+
 											<td scope="row">${list.getSkill_end()}</td>
 											<td scope="row">${list.getLevelName()}</td>
 										</tr>
@@ -731,10 +738,80 @@ ${pageContext.request.contextPath}/api/login">Danh
 
 							</form>
 						</div>
+
+						<div class="tab-pane" id="slr">
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Tên nhân viên</th>
+										<th scope="col">Tháng</th>
+										<th scope="col">Số ngày làm thực tế</th>
+										<th scope="col">Tổng lương</th>
+										<c:if test="${roleId == 1}">
+											<th scope="col">Thao tác</th>
+										</c:if>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="list" items="${listSalary}">
+										<tr>
+											<td scope="row">${list.getEmployeeName()}</td>
+											<td scope="row">${list.getMonth()}</td>
+											<td scope="row">${list.getTotalDay()}/26</td>
+											<td scope="row">${list.getTotalSalary()}</td>
+											<td scope="row">Thông tin chi tiết</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+
+							</table>
+						</div>
+
+						<div class="tab-pane" id="allowance">
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Tên nhân viên</th>
+										<th scope="col">Tên trợ cấp</th>
+										<th scope="col">Mô tả</th>
+										<th scope="col">Tổng trợ cấp</th>
+										<c:if test="${roleId == 1}">
+											<th scope="col">Thao tác</th>
+										</c:if>
+										<th><a
+											href="${pageContext.request.contextPath}/api/employee/allowance/add/${idAccount}"><button
+													type="button" style="float: right;"
+													class="btn btn-success px-3">
+													<i class="fa fa-plus" aria-hidden="true"></i>
+												</button></a></th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="list" items="${listAllownceEmployeeInfo}">
+										<tr>
+											<td scope="row">${list.getEmployeeName()}</td>
+											<td scope="row">${list.getSatName()}</td>
+											<td scope="row">${list.getSatDescription()}</td>
+											<td scope="row">${list.getSaTotalSalary()}VND</td>
+
+											<c:if test="${roleId == 1 }">
+												<td><a
+													href="${pageContext.request.contextPath}/api/employee/allowance/update/${list.getSaId()}"><button
+															type="button" class="btn btn-outline-warning">Update</button></a>
+												</td>
+											</c:if>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+
 					</div>
 				</div>
+
 			</div>
-			<!-- <div class="col-lg-4 order-lg-1 text-center">
+		</div>
+		<!-- <div class="col-lg-4 order-lg-1 text-center">
 				<img src="http://placehold.it/400"
 					class="mx-auto img-fluid img-circle d-block" alt="avatar">
 				<h6 class="mt-2">Upload a different photo</h6>
@@ -743,7 +820,6 @@ ${pageContext.request.contextPath}/api/login">Danh
 					class="custom-file-control">Choose file</span>
 				</label>
 			</div> -->
-		</div>
 	</div>
 
 	<!-- Bootstrap core JavaScript-->

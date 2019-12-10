@@ -12,7 +12,7 @@ public class EmployeeGetOneResponse {
 	private String employee_date;
 	private String end_date;
 	private String note;
-
+	private long salary_base;
 	private int status;
 	private int employee_type_id;
 	private int user_manager;
@@ -24,12 +24,12 @@ public class EmployeeGetOneResponse {
 	private String gender_name;
 
 	public EmployeeGetOneResponse() {
-		super();
+
 	}
 
 	public EmployeeGetOneResponse(int id, String first_name, String middle_name, String last_name, String phone,
 			String email, String dob, String address, String gender_name, String employee_date, String end_date,
-			String type_name, String status_name, String user_manager_name, String note) {
+			String type_name, String status_name, String user_manager_name, String note, long salary_base) {
 		super();
 		this.id = id;
 		this.first_name = first_name;
@@ -46,6 +46,7 @@ public class EmployeeGetOneResponse {
 		this.status_name = status_name;
 		this.user_manager_name = user_manager_name;
 		this.note = note;
+		this.salary_base = salary_base;
 	}
 
 	public int getId() {
@@ -200,6 +201,14 @@ public class EmployeeGetOneResponse {
 		this.sex = sex;
 	}
 
+	public long getSalary_base() {
+		return salary_base;
+	}
+
+	public void setSalary_base(long salary_base) {
+		this.salary_base = salary_base;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -207,9 +216,12 @@ public class EmployeeGetOneResponse {
 				.append(", middle_name=").append(middle_name).append(", last_name=").append(last_name)
 				.append(", phone=").append(phone).append(", email=").append(email).append(", dob=").append(dob)
 				.append(", address=").append(address).append(", employee_date=").append(employee_date)
-				.append(", end_date=").append(end_date).append(", note=").append(note).append(", type_name=")
-				.append(type_name).append(", status_name=").append(status_name).append(", user_manager_name=")
-				.append(user_manager_name).append(", gender_name=").append(gender_name).append("]");
+				.append(", end_date=").append(end_date).append(", note=").append(note).append(", salary_base=")
+				.append(salary_base).append(", status=").append(status).append(", employee_type_id=")
+				.append(employee_type_id).append(", user_manager=").append(user_manager).append(", sex=").append(sex)
+				.append(", type_name=").append(type_name).append(", status_name=").append(status_name)
+				.append(", user_manager_name=").append(user_manager_name).append(", gender_name=").append(gender_name)
+				.append("]");
 		return builder.toString();
 	}
 

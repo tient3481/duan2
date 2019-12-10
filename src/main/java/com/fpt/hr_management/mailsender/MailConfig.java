@@ -52,7 +52,8 @@ public class MailConfig {
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailReset));
 			message.setSubject("Reset password system");
 			int code = randomCode();
-			message.setText("Here is the password change code for your account:  " + code);
+			message.setText("XTEL-INTERNAL notification to: " + emailReset
+					+ ". Here is the password change code for your account:  " + code);
 			try {
 				Transport.send(message);
 				System.out.println("Message sent successfully: " + mailInfo.getCode());
@@ -60,7 +61,7 @@ public class MailConfig {
 				e.printStackTrace();
 			}
 			mailInfo.setCode(code);
-		
+
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}

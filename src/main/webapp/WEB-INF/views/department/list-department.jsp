@@ -298,9 +298,10 @@ ${pageContext.request.contextPath}/api/login">Danh
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"> Danh sách phòng ban</i> <a href="#"
-							class="btn btn-success" style="float: right;"><span
-							class="glyphicon glyphicon-plus">+</span> </a>
+						<i class="fas fa-table"> Danh sách phòng ban</i><a
+							href="${pageContext.request.contextPath}/api/department/add"
+							style="float: right;" class="btn btn-info" role="button">Thêm
+							mới</a>
 					</div>
 					<form action="${pageContext.request.contextPath}/api/department">
 						<div class="card-body">
@@ -326,7 +327,7 @@ ${pageContext.request.contextPath}/api/login">Danh
 												<c:if test="${roleId == 0}">
 													<td><a
 														href="${pageContext.request.contextPath}/api/department/update/${list.getId()}"><button
-																type="button" class="btn btn-outline-danger">Update</button></a>
+																type="button" class="btn btn-outline-warning">Update</button></a>
 														<a
 														href="${pageContext.request.contextPath}/api/department/delete/${list.getId()}"><button
 																type="button"

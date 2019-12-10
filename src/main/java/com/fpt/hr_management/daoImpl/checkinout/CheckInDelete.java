@@ -13,7 +13,7 @@ public class CheckInDelete {
 	private ResultSet rs = null;
 
 	public void delete(CheckInDeleteRequest request) {
-		String sql = "DELETE FROM check_in where id =?;";
+		String sql = "DELETE FROM check_in_history where id =?;";
 		try {
 			con = DbConnection.getConnection();
 			if (con != null) {

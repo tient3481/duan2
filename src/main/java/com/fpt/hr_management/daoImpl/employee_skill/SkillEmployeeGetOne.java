@@ -31,9 +31,12 @@ public class SkillEmployeeGetOne {
 					skillInfo.setId(rs.getInt("id"));
 					skillInfo.setEmployee_id(rs.getInt("employee_id"));
 					skillInfo.setSkill_id(rs.getInt("skill_id"));
-					skillInfo.setSkill_main(rs.getString("skill_main"));
 					skillInfo.setSkill_start(rs.getInt("skill_start"));
-					skillInfo.setSkill_end(rs.getInt("skill_end"));
+					if (rs.getInt("skill_end") == 0) {
+						skillInfo.setSkillEndName("Không xác định");
+					} else {
+						skillInfo.setSkill_end(rs.getInt("skill_end"));
+					}
 					skillInfo.setLevel_id(rs.getInt("level_id"));
 					skillInfo.setLevelName(rs.getString("levelName"));
 					skillInfo.setSkillName(rs.getString("skillName"));

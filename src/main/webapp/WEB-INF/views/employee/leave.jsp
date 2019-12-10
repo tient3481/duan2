@@ -1,12 +1,15 @@
+<%@page import="java.util.Map"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="java.io.*,java.util.*, javax.servlet.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<title>XTEL</title>
+<title>XTEL INTERNAL</title>
 
 <link
 	href="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/fontawesome-free/css/all.min.css"
@@ -21,7 +24,8 @@
 <link
 	href="https://blackrockdigital.github.io/startbootstrap-sb-admin/css/sb-admin.css"
 	rel="stylesheet" type="text/css">
-
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 
 <body id="page-top">
@@ -34,45 +38,10 @@
 		<!-- Navbar Search -->
 		<form
 			class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search for..."
-					aria-label="Search" aria-describedby="basic-addon2">
-				<div class="input-group-append">
-					<button class="btn btn-primary" type="button">
-						<i class="fas fa-search"></i>
-					</button>
-				</div>
-			</div>
 		</form>
 
 		<!-- Navbar -->
 		<ul class="navbar-nav ml-auto ml-md-0">
-			<li class="nav-item dropdown no-arrow mx-1"><a
-				class="nav-link dropdown-toggle" href="#" id="alertsDropdown"
-				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false"> <i class="fas fa-bell fa-fw"></i> <span
-					class="badge badge-danger">9+</span>
-			</a>
-				<div class="dropdown-menu dropdown-menu-right"
-					aria-labelledby="alertsDropdown">
-					<a class="dropdown-item" href="#">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
-			<li class="nav-item dropdown no-arrow mx-1"><a
-				class="nav-link dropdown-toggle" href="#" id="messagesDropdown"
-				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false"> <i class="fas fa-envelope fa-fw"></i> <span
-					class="badge badge-danger">7</span>
-			</a>
-				<div class="dropdown-menu dropdown-menu-right"
-					aria-labelledby="messagesDropdown">
-					<a class="dropdown-item" href="#">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
 			<li class="nav-item dropdown no-arrow"><a
 				class="nav-link dropdown-toggle" href="#" id="userDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -80,11 +49,14 @@
 			</a>
 				<div class="dropdown-menu dropdown-menu-right"
 					aria-labelledby="userDropdown">
-					<a class="dropdown-item" href="#">Settings</a> <a
-						class="dropdown-item" href="#">Activity Log</a>
+					<a class="dropdown-item"
+						href="${pageContext.request.contextPath}/api/employee/update/${accountName}">${accountName}-
+						${roleName}</a> <a class="dropdown-item"
+						href="${pageContext.request.contextPath}/api/account/forgot-password">Quên
+						mật khẩu</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#" data-toggle="modal"
-						data-target="#logoutModal">Logout</a>
+					<a class="dropdown-item"
+						href="${pageContext.request.contextPath}/api/account/logout">Logout</a>
 				</div></li>
 		</ul>
 
@@ -107,6 +79,7 @@
 						<i class="fas fa-fw fa-home"></i> <span>Home</span>
 				</a></li>
 			</c:if>
+
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -116,20 +89,18 @@
 					<h6 class="dropdown-header">Danh mục</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Tài
-						khoản</a> <a class="dropdown-item"
-						href="
 ${pageContext.request.contextPath}/api/login">Nhóm kỹ
 						năng</a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Kỹ năng</a>
-					<a class="dropdown-item"
+${pageContext.request.contextPath}/api/skill/get">Kỹ
+						năng</a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Phòng
-						ban</a> <a class="dropdown-item"
+${pageContext.request.contextPath}/api/skill/#">Phòng
+						ban </a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Danh mục
-						nghỉ phép</a>
+${pageContext.request.contextPath}/api/skill/#">Danh
+						mục nghỉ phép </a>
+
 					<div class="dropdown-divider"></div>
 
 					<!-- <h6 class="dropdown-header">Other Pages:</h6>
@@ -147,15 +118,11 @@ ${pageContext.request.contextPath}/api/login">Danh mục
 					<h6 class="dropdown-header">Danh mục</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/employee/checkin">Thông
-						tin chấm công</a> <a class="dropdown-item"
+${pageContext.request.contextPath}/api/employee/update/${accountId}">Thông
+						tin cá nhân</a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/employee/leave/get">Thống
-						kê ngày nghỉ</a> <a class="dropdown-item"
-						href="
-${pageContext.request.contextPath}/api/employee/leave/add">Đăng
-						ký nghỉ</a>
-
+${pageContext.request.contextPath}/api/employee/update/${accountId}">Thông
+						tin nhân thân</a>
 					<div class="dropdown-divider"></div>
 
 				</div></li>
@@ -193,20 +160,13 @@ ${pageContext.request.contextPath}/api/employee/leave/add">Đăng
 					<h6 class="dropdown-header">Danh mục quản lý</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Danh
+${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 						sách bảng lương</a>
 					<div class="dropdown-divider"></div>
 
-					<!-- <h6 class="dropdown-header">Other Pages:</h6>
-					<a class="dropdown-item" href="404.html">404 Page</a> <a
-						class="dropdown-item" href="blank.html">Blank Page</a> -->
 				</div></li>
-			<!-- 		<li class="nav-item"><a class="nav-link" href="tables.html">
-					<i class="fas fa-fw fa-table"></i> <span>Thông tin chung</span>
-			</a></li> -->
-		</ul>
-		<!--slide bar  -->
 
+		</ul>
 		<div id="content-wrapper">
 
 			<div class="container-fluid">
@@ -296,14 +256,19 @@ ${pageContext.request.contextPath}/api/login">Danh
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"> Employee</i>
+						<i class="fas fa-table"> Danh sách thông tin đăng ký/ trạng
+							thái nghỉ phép</i>
 
 					</div>
+
 					<form
 						action="${pageContext.request.contextPath}/api/employee/leave">
 						<div class="card-body">
 							<div class="table-responsive">
-								Tổng số đơn cần phê duyệt: ${count}
+
+								<button type="button" style="float: right; margin-bottom: 10px;"
+									class="btn btn-info" data-toggle="modal" data-target="#myModal">Xem
+									thêm thông tin</button>
 								<table class="table table-bordered" id="dataTable">
 									<thead>
 										<c:if test="${roleId == 1 || roleId == 2}">
@@ -318,6 +283,9 @@ ${pageContext.request.contextPath}/api/login">Danh
 											<th>Thời gian kết thúc</th>
 											<th>Trạng thái</th>
 											<th>Người duyệt</th>
+											<c:if test="${roleId == 1}">
+												<th>Thao tác</th>
+											</c:if>
 
 											<c:if test="${list.getAccept_status() == 0}">
 												<th>Thao tác</th>
@@ -372,7 +340,32 @@ ${pageContext.request.contextPath}/api/login">Danh
 
 			</div>
 			<!-- /.container-fluid -->
-
+			<div class="modal fade" id="myModal" data-backdrop="static"
+				data-keyboard="false" tabindex="-1" aria-labelledby="myModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<h4 class="modal-title">Thông tin nghỉ phép</h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<!-- Modal body -->
+						<div class="modal-body">
+							Thông tin tính từ ngày: ${dateMin} đến ${dateMax}
+							<hr>
+							Tổng số đơn chờ phê duyệt: ${count} <br> Số ngày nghỉ phép
+							được phê duyệt: ${approved} <br> Số ngày nghỉ phép bị từ
+							chối: ${notApproved} <br>
+	
+						</div>
+						<!-- Modal footer -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
 			<!-- Sticky Footer -->
 			<footer class="sticky-footer">
 				<div class="container my-auto">
@@ -393,29 +386,6 @@ ${pageContext.request.contextPath}/api/login">Danh
 	<a class="scroll-to-top rounded" href="#page-top"> <i
 		class="fas fa-angle-up"></i>
 	</a>
-
-	<!-- Logout Modal-->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-					<button class="close" type="button" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">Ã</span>
-					</button>
-				</div>
-				<div class="modal-body">Select "Logout" below if you are ready
-					to end your current session.</div>
-				<div class="modal-footer">
-					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
-				</div>
-			</div>
-		</div>
-	</div>
 
 	<!-- Bootstrap core JavaScript-->
 	<script
@@ -446,6 +416,13 @@ ${pageContext.request.contextPath}/api/login">Danh
 		src="https://blackrockdigital.github.io/startbootstrap-sb-admin/js/demo/datatables-demo.js"></script> -->
 	<script
 		src="https://blackrockdigital.github.io/startbootstrap-sb-admin/js/demo/chart-area-demo.js"></script>
+
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 
 </html>

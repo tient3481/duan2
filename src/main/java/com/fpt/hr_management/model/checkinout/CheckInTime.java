@@ -1,49 +1,66 @@
 package com.fpt.hr_management.model.checkinout;
 
 public class CheckInTime {
-	private int hour;
-	private int minute;
-	private int second;
+	private long hour;
+	private long minute;
+	private long second;
+
+	private long totalMinute;
 
 	public CheckInTime() {
 
 	}
 
-	public CheckInTime(int hour, int minute, int second) {
+	public CheckInTime(long hour, long minute, long second, long totalMinute) {
+		this.hour = hour;
+		this.minute = minute;
+		this.second = second;
+		this.totalMinute = totalMinute;
+	}
+
+	public CheckInTime(long hour, long minute, long second) {
 		this.hour = hour;
 		this.minute = minute;
 		this.second = second;
 	}
 
-	public int getHour() {
+	public long getHour() {
 		return hour;
 	}
 
-	public void setHour(int hour) {
+	public void setHour(long hour) {
 		this.hour = hour;
 	}
 
-	public int getMinute() {
+	public long getMinute() {
 		return minute;
 	}
 
-	public void setMinute(int minute) {
+	public void setMinute(long minute) {
 		this.minute = minute;
 	}
 
-	public int getSecond() {
+	public long getSecond() {
 		return second;
 	}
 
-	public void setSecond(int second) {
+	public void setSecond(long second) {
 		this.second = second;
+	}
+
+	public long getTotalMinute() {
+		return totalMinute;
+	}
+
+	public void setTotalMinute(long totalMinute) {
+		this.totalMinute = totalMinute;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("InfoCheckIn [hour=").append(hour).append(", minute=").append(minute).append(", second=")
-				.append(second).append("]");
+		builder.append("CheckInTime [hour=").append(hour).append(", minute=").append(minute).append(", second=")
+				.append(second).append(", totalMinute=").append(totalMinute).append("]");
 		return builder.toString();
 	}
 

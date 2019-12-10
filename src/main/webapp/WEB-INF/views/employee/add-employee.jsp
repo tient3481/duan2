@@ -1,12 +1,15 @@
+<%@page import="java.util.Map"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="java.io.*,java.util.*, javax.servlet.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<title>XTEL</title>
+<title>XTEL INTERNAL</title>
 
 <link
 	href="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/fontawesome-free/css/all.min.css"
@@ -23,7 +26,9 @@
 	rel="stylesheet" type="text/css">
 
 </head>
+
 <body id="page-top">
+
 	<nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
 		<a class="navbar-brand mr-1"
@@ -32,44 +37,10 @@
 		<!-- Navbar Search -->
 		<form
 			class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search for..."
-					aria-label="Search" aria-describedby="basic-addon2">
-				<div class="input-group-append">
-					<button class="btn btn-primary" type="button">
-						<i class="fas fa-search"></i>
-					</button>
-				</div>
-			</div>
 		</form>
+
 		<!-- Navbar -->
 		<ul class="navbar-nav ml-auto ml-md-0">
-			<li class="nav-item dropdown no-arrow mx-1"><a
-				class="nav-link dropdown-toggle" href="#" id="alertsDropdown"
-				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false"> <i class="fas fa-bell fa-fw"></i> <span
-					class="badge badge-danger">9+</span>
-			</a>
-				<div class="dropdown-menu dropdown-menu-right"
-					aria-labelledby="alertsDropdown">
-					<a class="dropdown-item" href="#">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
-			<li class="nav-item dropdown no-arrow mx-1"><a
-				class="nav-link dropdown-toggle" href="#" id="messagesDropdown"
-				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false"> <i class="fas fa-envelope fa-fw"></i> <span
-					class="badge badge-danger">7</span>
-			</a>
-				<div class="dropdown-menu dropdown-menu-right"
-					aria-labelledby="messagesDropdown">
-					<a class="dropdown-item" href="#">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
 			<li class="nav-item dropdown no-arrow"><a
 				class="nav-link dropdown-toggle" href="#" id="userDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -77,21 +48,37 @@
 			</a>
 				<div class="dropdown-menu dropdown-menu-right"
 					aria-labelledby="userDropdown">
-					<a class="dropdown-item" href="#">Settings</a> <a
-						class="dropdown-item" href="#">Activity Log</a>
+					<a class="dropdown-item"
+						href="${pageContext.request.contextPath}/api/employee/update/${accountName}">${accountName}-
+						${roleName}</a> <a class="dropdown-item"
+						href="${pageContext.request.contextPath}/api/account/forgot-password">Quên
+						mật khẩu</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#" data-toggle="modal"
-						data-target="#logoutModal">Logout</a>
+					<a class="dropdown-item"
+						href="${pageContext.request.contextPath}/api/account/logout">Logout</a>
 				</div></li>
 		</ul>
+
 	</nav>
+
 	<div id="wrapper">
 
 		<!-- Sidebar -->
 		<ul class="sidebar navbar-nav">
-			<li class="nav-item active"><a class="nav-link"
-				href="index.html"> <i class="fas fa-fw fa-home"></i> <span>Dashboard</span>
-			</a></li>
+			<c:if test="${roleId ==1}">
+				<li class="nav-item active"><a class="nav-link"
+					href="${pageContext.request.contextPath}/api/employee/get"> <i
+						class="fas fa-fw fa-home"></i> <span>Home</span>
+				</a></li>
+			</c:if>
+
+			<c:if test="${roleId !=1}">
+				<li class="nav-item active"><a class="nav-link"
+					href="${pageContext.request.contextPath}/api/employee/update/${accountId}">
+						<i class="fas fa-fw fa-home"></i> <span>Home</span>
+				</a></li>
+			</c:if>
+
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -101,20 +88,18 @@
 					<h6 class="dropdown-header">Danh mục</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Tài
-						khoản</a> <a class="dropdown-item"
-						href="
 ${pageContext.request.contextPath}/api/login">Nhóm kỹ
 						năng</a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Kỹ năng</a>
-					<a class="dropdown-item"
+${pageContext.request.contextPath}/api/skill/get">Kỹ
+						năng</a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Phòng
-						ban</a> <a class="dropdown-item"
+${pageContext.request.contextPath}/api/skill/#">Phòng
+						ban </a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Danh mục
-						nghỉ phép</a>
+${pageContext.request.contextPath}/api/skill/#">Danh
+						mục nghỉ phép </a>
+
 					<div class="dropdown-divider"></div>
 
 					<!-- <h6 class="dropdown-header">Other Pages:</h6>
@@ -127,6 +112,24 @@ ${pageContext.request.contextPath}/api/login">Danh mục
 				role="button" data-toggle="dropdown" aria-haspopup="true"
 				aria-expanded="false"> <i class="fas fa-fw fa-calendar-alt"></i>
 					<span>Thông tin chung</span>
+			</a>
+				<div class="dropdown-menu" aria-labelledby="pagesDropdown">
+					<h6 class="dropdown-header">Danh mục</h6>
+					<a class="dropdown-item"
+						href="
+${pageContext.request.contextPath}/api/employee/update/${accountId}">Thông
+						tin cá nhân</a> <a class="dropdown-item"
+						href="
+${pageContext.request.contextPath}/api/employee/update/${accountId}">Thông
+						tin nhân thân</a>
+					<div class="dropdown-divider"></div>
+
+				</div></li>
+			<li class="nav-item dropdown"><a
+				class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
+				role="button" data-toggle="dropdown" aria-haspopup="true"
+				aria-expanded="false"> <i class="fas fa-fw fa-calendar-alt"></i>
+					<span>Chấm công</span>
 			</a>
 				<div class="dropdown-menu" aria-labelledby="pagesDropdown">
 					<h6 class="dropdown-header">Danh mục</h6>
@@ -145,52 +148,7 @@ ${pageContext.request.contextPath}/api/employee/leave/add">Đăng
 
 				</div></li>
 
-			<li class="nav-item dropdown"><a
-				class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
-				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false"> <i class="fas fa-fw fa-calendar-alt"></i>
-					<span>Chấm công</span>
-			</a>
-				<div class="dropdown-menu" aria-labelledby="pagesDropdown">
-					<h6 class="dropdown-header">Danh mục</h6>
-					<a class="dropdown-item"
-						href="
-${pageContext.request.contextPath}/api/employee/checkin">Thông
-						tin chấm công</a> <a class="dropdown-item"
-						href="
-${pageContext.request.contextPath}/api/employee/checkin">Thống
-						kê ngày nghỉ</a> <a class="dropdown-item"
-						href="
-${pageContext.request.contextPath}/api/employee/leave/add">Đăng
-						ký nghỉ</a>
 
-					<div class="dropdown-divider"></div>
-
-				</div></li>
-
-
-			<li class="nav-item dropdown"><a
-				class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
-				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false"> <i class="fas fa-users"></i> <span>Nhân
-						viên</span>
-			</a>
-				<div class="dropdown-menu" aria-labelledby="pagesDropdown">
-					<h6 class="dropdown-header">Danh mục</h6>
-					<a class="dropdown-item"
-						href="
-${pageContext.request.contextPath}/api/employee/checkin">Danh
-						sách nhân viên</a> <a class="dropdown-item"
-						href="
-${pageContext.request.contextPath}/api/employee/checkin">Thống
-						kê ngày nghỉ</a> <a class="dropdown-item"
-						href="
-${pageContext.request.contextPath}/api/employee/leave/add">Đăng
-						ký nghỉ</a>
-
-					<div class="dropdown-divider"></div>
-
-				</div></li>
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="pagesDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -201,20 +159,13 @@ ${pageContext.request.contextPath}/api/employee/leave/add">Đăng
 					<h6 class="dropdown-header">Danh mục quản lý</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Danh
+${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 						sách bảng lương</a>
 					<div class="dropdown-divider"></div>
 
-					<!-- <h6 class="dropdown-header">Other Pages:</h6>
-					<a class="dropdown-item" href="404.html">404 Page</a> <a
-						class="dropdown-item" href="blank.html">Blank Page</a> -->
 				</div></li>
-			<!-- 		<li class="nav-item"><a class="nav-link" href="tables.html">
-					<i class="fas fa-fw fa-table"></i> <span>Thông tin chung</span>
-			</a></li> -->
-		</ul>
-		<!--slide bar  -->
 
+		</ul>
 		<div id="content-wrapper">
 
 			<div class="container-fluid">

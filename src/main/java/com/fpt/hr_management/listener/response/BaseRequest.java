@@ -6,6 +6,17 @@ public class BaseRequest {
 	protected String last_modifier_date;
 	protected String last_modifier_by;
 
+	public BaseRequest() {
+
+	}
+
+	public BaseRequest(String created_by, String created_date, String last_modifier_date, String last_modifier_by) {
+		this.created_by = created_by;
+		this.created_date = created_date;
+		this.last_modifier_date = last_modifier_date;
+		this.last_modifier_by = last_modifier_by;
+	}
+
 	public String getCreated_by() {
 		return created_by;
 	}

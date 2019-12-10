@@ -29,8 +29,8 @@ public class HolidayInfoAdd {
 
 				responseHoliday.setEmployee_id(request.getEmployee_id());
 				responseHoliday.setTotal_holiday(request.getTotal_holiday());
-
 				listHoliday.add(responseHoliday);
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

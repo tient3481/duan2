@@ -1,10 +1,10 @@
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<title>ANKN Team</title>
+<title>XTEL - Login</title>
 
 <link
 	href="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/fontawesome-free/css/all.min.css"
@@ -19,11 +19,6 @@
 <link
 	href="https://blackrockdigital.github.io/startbootstrap-sb-admin/css/sb-admin.css"
 	rel="stylesheet" type="text/css">
-
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-	crossorigin="anonymous">
 
 </head>
 <body class="bg-dark">
@@ -57,19 +52,23 @@
 					<button type="submit" name="loginAccount" class="btn btn-primary">Login</button>
 				</form>
 
-
 				<div class="text-center">
 					<a class="d-block small mt-3" href="register.html">Register an
 						Account</a> <a class="d-block small" href="forgot-password.html">Forgot
 						Password?</a>
 				</div>
+
+				<c:if test="${not empty message}">
+					<div class="alert alert-${alerted}" role="alert">
+						Thông báo! <a href="#" class="alert-link"> ${message} </a>
+					</div>
+				</c:if>
 			</div>
 		</div>
 	</div>
 	<!-- Bootstrap core JavaScript-->
 	<script
 		src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/jquery/jquery.min.js"></script>
-
 
 	<script
 		src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -90,7 +89,6 @@
 	<script
 		src="https://blackrockdigital.github.io/startbootstrap-sb-admin/js/sb-admin.min.js"></script>
 
-	<!-- Demo scripts for this page -->
 	<!-- <script
 		src="https://blackrockdigital.github.io/startbootstrap-sb-admin/js/demo/datatables-demo.js"></script> -->
 	<script

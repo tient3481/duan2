@@ -7,11 +7,10 @@ public class AccountResetPasswordRequest extends BaseRequest {
 	private String password;
 
 	public AccountResetPasswordRequest() {
-		super();
+
 	}
 
 	public AccountResetPasswordRequest(String email, String password, String last_modifier_by) {
-		super();
 		this.email = email;
 		this.password = password;
 		this.last_modifier_by = last_modifier_by;

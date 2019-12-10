@@ -11,7 +11,7 @@ public class EmployeeUpdate {
 	public void update(EmployeeUpdateRequest request) {
 		Connection con = null;
 		PreparedStatement pstm = null;
-		String sql = "UPDATE employee SET first_name =?, middle_name = ?, last_name =?, full_name=?, phone=?, email=?, dob=?, address=?, sex=?, employee_date=?, end_date=?, employee_type_id=?, status=?, note=?, last_modifier_by =? WHERE id =?;";
+		String sql = "UPDATE employee SET first_name =?, middle_name = ?, last_name =?, full_name=?, phone=?, email=?, dob=?, address=?, sex=?, employee_date=?, end_date=?, employee_type_id=?, status=?, note=?, salary_base=?, last_modifier_by =? WHERE id =?;";
 		try {
 			con = DbConnection.getConnection();
 			if (con != null) {
@@ -31,8 +31,9 @@ public class EmployeeUpdate {
 				pstm.setInt(12, request.getEmployee_type_id());
 				pstm.setInt(13, request.getStatus());
 				pstm.setString(14, request.getNote());
-				pstm.setString(15, request.getLast_modifier_by());
-				pstm.setInt(16, request.getId());
+				pstm.setLong(15, request.getBase_salary());
+				pstm.setString(16, request.getLast_modifier_by());
+				pstm.setInt(17, request.getId());
 
 				pstm.executeUpdate();
 			}

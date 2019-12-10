@@ -10,6 +10,7 @@ import com.fpt.hr_management.daoImpl.checkinout.CheckOutUpdate;
 import com.fpt.hr_management.listener.request.checkin.CheckInAddRequest;
 import com.fpt.hr_management.listener.request.checkin.CheckInDeleteRequest;
 import com.fpt.hr_management.listener.request.checkin.CheckInUserRequest;
+import com.fpt.hr_management.listener.request.checkin.CheckOutGetTimeRequest;
 import com.fpt.hr_management.listener.request.checkin.CheckOutUpdateRequest;
 import com.fpt.hr_management.listener.response.checkinout.CheckInGetAllResponse;
 
@@ -33,6 +34,7 @@ public class CheckInOutImpl implements DaoCheckInOut {
 	public void updateCheckIn(CheckOutUpdateRequest request) {
 		CheckOutUpdate service = new CheckOutUpdate();
 		service.checkOut(request);
+		service.checkOutUpdateTotalTime(new CheckOutGetTimeRequest(request.getId()));
 	}
 
 }

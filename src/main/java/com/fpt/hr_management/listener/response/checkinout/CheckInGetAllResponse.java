@@ -6,6 +6,7 @@ public class CheckInGetAllResponse {
 	private String employee_name;
 	private String check_in_time;
 	private String check_out_time;
+	private String total_time;
 	private String date;
 
 	public CheckInGetAllResponse() {
@@ -71,12 +72,21 @@ public class CheckInGetAllResponse {
 		this.date = date;
 	}
 
+	public String getTotal_time() {
+		return total_time;
+	}
+
+	public void setTotal_time(String total_time) {
+		this.total_time = total_time;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("CheckInGetAllResponse [id=").append(id).append(", user_id=").append(user_id)
 				.append(", employee_name=").append(employee_name).append(", check_in_time=").append(check_in_time)
-				.append(", check_out_time=").append(check_out_time).append(", date=").append(date).append("]");
+				.append(", check_out_time=").append(check_out_time).append(", total_time=").append(total_time)
+				.append(", date=").append(date).append("]");
 		return builder.toString();
 	}
 

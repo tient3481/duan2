@@ -1,13 +1,15 @@
 <%@page import="java.util.Map"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="java.io.*,java.util.*, javax.servlet.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<title>XTEL</title>
+<title>XTEL INTERNAL</title>
 
 <link
 	href="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/fontawesome-free/css/all.min.css"
@@ -35,45 +37,10 @@
 		<!-- Navbar Search -->
 		<form
 			class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search for..."
-					aria-label="Search" aria-describedby="basic-addon2">
-				<div class="input-group-append">
-					<button class="btn btn-primary" type="button">
-						<i class="fas fa-search"></i>
-					</button>
-				</div>
-			</div>
 		</form>
 
 		<!-- Navbar -->
 		<ul class="navbar-nav ml-auto ml-md-0">
-			<li class="nav-item dropdown no-arrow mx-1"><a
-				class="nav-link dropdown-toggle" href="#" id="alertsDropdown"
-				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false"> <i class="fas fa-bell fa-fw"></i> <span
-					class="badge badge-danger">9+</span>
-			</a>
-				<div class="dropdown-menu dropdown-menu-right"
-					aria-labelledby="alertsDropdown">
-					<a class="dropdown-item" href="#">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
-			<li class="nav-item dropdown no-arrow mx-1"><a
-				class="nav-link dropdown-toggle" href="#" id="messagesDropdown"
-				role="button" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false"> <i class="fas fa-envelope fa-fw"></i> <span
-					class="badge badge-danger">7</span>
-			</a>
-				<div class="dropdown-menu dropdown-menu-right"
-					aria-labelledby="messagesDropdown">
-					<a class="dropdown-item" href="#">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
 			<li class="nav-item dropdown no-arrow"><a
 				class="nav-link dropdown-toggle" href="#" id="userDropdown"
 				role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -81,8 +48,14 @@
 			</a>
 				<div class="dropdown-menu dropdown-menu-right"
 					aria-labelledby="userDropdown">
-					<a class="dropdown-item" href="#">Settings</a> <a
-						class="dropdown-item" href="#">Activity Log</a>
+					<a class="dropdown-item"
+						href="${pageContext.request.contextPath}/api/employee/update/${accountId}">${accountName}-
+						${roleName}</a> <a class="dropdown-item"
+						href="${pageContext.request.contextPath}/api/account/user-change-password">Đổi
+						mật khẩu</a> <a class="dropdown-item"
+						href="${pageContext.request.contextPath}/api/account/forgot-password">Quên
+						mật khẩu</a>
+
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item"
 						href="${pageContext.request.contextPath}/api/account/logout">Logout</a>
@@ -118,25 +91,20 @@
 					<h6 class="dropdown-header">Danh mục</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Tài
-						khoản</a> <a class="dropdown-item"
+${pageContext.request.contextPath}/api/category-skill/get">Nhóm
+						kỹ năng</a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Nhóm kỹ
+${pageContext.request.contextPath}/api/skill/get">Kỹ
 						năng</a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Kỹ năng</a>
-					<a class="dropdown-item"
+${pageContext.request.contextPath}/api/department/get">Phòng
+						ban </a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Phòng
-						ban</a> <a class="dropdown-item"
-						href="
-${pageContext.request.contextPath}/api/login">Danh mục
-						nghỉ phép</a>
+${pageContext.request.contextPath}/api/leave_type/get">Danh
+						mục nghỉ phép </a>
+
 					<div class="dropdown-divider"></div>
 
-					<!-- <h6 class="dropdown-header">Other Pages:</h6>
-					<a class="dropdown-item" href="404.html">404 Page</a> <a
-						class="dropdown-item" href="blank.html">Blank Page</a> -->
 				</div></li>
 
 			<li class="nav-item dropdown"><a
@@ -149,15 +117,11 @@ ${pageContext.request.contextPath}/api/login">Danh mục
 					<h6 class="dropdown-header">Danh mục</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/employee/checkin">Thông
-						tin chấm công</a> <a class="dropdown-item"
+${pageContext.request.contextPath}/api/employee/update/${accountId}">Thông
+						tin cá nhân</a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/employee/leave/get">Thống
-						kê ngày nghỉ</a> <a class="dropdown-item"
-						href="
-${pageContext.request.contextPath}/api/employee/leave/add">Đăng
-						ký nghỉ</a>
-
+${pageContext.request.contextPath}/api/employee/update/${accountId}">Thông
+						tin nhân thân</a>
 					<div class="dropdown-divider"></div>
 
 				</div></li>
@@ -171,10 +135,13 @@ ${pageContext.request.contextPath}/api/employee/leave/add">Đăng
 					<h6 class="dropdown-header">Danh mục</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/employee/checkin">Thông
-						tin chấm công</a> <a class="dropdown-item"
+${pageContext.request.contextPath}/api/employee/checkin-realtime/get/${accountId}">Thống
+						kê chấm công</a> <a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/employee/checkin">Thống
+${pageContext.request.contextPath}/api/employee/checkin">Lịch
+						sử chấm công</a> <a class="dropdown-item"
+						href="
+${pageContext.request.contextPath}/api/employee/leave/get">Thống
 						kê ngày nghỉ</a> <a class="dropdown-item"
 						href="
 ${pageContext.request.contextPath}/api/employee/leave/add">Đăng
@@ -195,17 +162,12 @@ ${pageContext.request.contextPath}/api/employee/leave/add">Đăng
 					<h6 class="dropdown-header">Danh mục quản lý</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/login">Danh
+${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 						sách bảng lương</a>
 					<div class="dropdown-divider"></div>
 
-					<!-- <h6 class="dropdown-header">Other Pages:</h6>
-					<a class="dropdown-item" href="404.html">404 Page</a> <a
-						class="dropdown-item" href="blank.html">Blank Page</a> -->
 				</div></li>
-			<!-- 		<li class="nav-item"><a class="nav-link" href="tables.html">
-					<i class="fas fa-fw fa-table"></i> <span>Thông tin chung</span>
-			</a></li> -->
+
 		</ul>
 		<!--slide bar  -->
 
@@ -298,11 +260,21 @@ ${pageContext.request.contextPath}/api/login">Danh
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"> Employee</i> <a href="#"
-							class="btn btn-success" style="float: right;"><span
-							class="glyphicon glyphicon-plus">+</span> </a>
-
+						<form class="">
+							<!-- d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0 -->
+							<div class="input-group" style="float: left;">
+								<input type="text" class="form-control"
+									placeholder="Search for..." aria-label="Search"
+									aria-describedby="basic-addon2">
+								<div class="input-group-append">
+									<button class="btn btn-success" type="button">
+										<i class="fas fa-search"></i>
+									</button>
+								</div>
+							</div>
+						</form>
 					</div>
+
 					<form action="${pageContext.request.contextPath}/api/employee">
 						<div class="card-body">
 							<div class="table-responsive">
@@ -338,14 +310,15 @@ ${pageContext.request.contextPath}/api/login">Danh
 												<td>${list.getStart_date()}</td>
 												<td>${list.getEmployee_date()}</td>
 												<c:if test="${roleId == 1}">
-													<td>
-														<button type="button" class="btn btn-outline-warning">Update</button>
+													<td><a
+														href="${pageContext.request.contextPath}/api/employee/update/${list.getId()}"><button
+																type="button" class="btn btn-outline-warning">Update</button></a>
+
 														<a
 														href="${pageContext.request.contextPath}/api/employee/delete/${list.getId()}"><button
 																type="button"
 																onclick="return confirm('Xác nhận xóa nhân viên: ${list.getFull_name()}')"
-																class="btn btn-outline-danger">Delete</button></a>
-													</td>
+																class="btn btn-outline-danger">Delete</button></a></td>
 
 
 												</c:if>
@@ -354,7 +327,6 @@ ${pageContext.request.contextPath}/api/login">Danh
 									</c:forEach>
 
 								</table>
-								<a>Role name: ${roleName}</a>
 
 								<c:if test="${not empty message}">
 									<div class="alert alert-${alerted}" role="alert">
@@ -442,6 +414,14 @@ ${pageContext.request.contextPath}/api/login">Danh
 		src="https://blackrockdigital.github.io/startbootstrap-sb-admin/js/demo/datatables-demo.js"></script> -->
 	<script
 		src="https://blackrockdigital.github.io/startbootstrap-sb-admin/js/demo/chart-area-demo.js"></script>
+
+	<script>
+		var myVar = setInterval(myTimer, 1000);
+		function myTimer() {
+			var d = new Date();
+			document.getElementById("demo").innerHTML = d.toLocaleTimeString();
+		}
+	</script>
 </body>
 
 </html>

@@ -1,16 +1,18 @@
 package com.fpt.hr_management.controller;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fpt.hr_management.daoImpl.CheckInOutImpl;
 import com.fpt.hr_management.daoImpl.authentication.AuthenticationAccount;
@@ -36,73 +38,61 @@ public class CheckInController extends AuthenticationAccount {
 		request.setId(userAuthen.getUser_id());
 		employeeList = service.listCheckIn(request);
 		model.addAttribute("employeeList", employeeList);
+
 		return "checkin/CheckInInfo";
 	}
 
 	@RequestMapping(params = "checkin")
-	public String checkInAdd(HttpSession session, Model model) {
+	public ModelAndView checkInAdd(HttpSession session, Model model, HttpServletResponse response,
+			RedirectAttributes reAt, ModelAndView mav) {
 		if (session.getAttribute("account") == null) {
-			return "redirect:/api/account/login";
+			return new ModelAndView("redirect:/api/account/login");
 		}
 
+		mav = new ModelAndView("redirect:/api/employee/checkin");
 		CheckInAddRequest request = new CheckInAddRequest();
 		request.setUser_id(userAuthen.getUser_id());
 		service.addCheckIn(request);
+		Cookie cookie = new Cookie("userCookie", userAuthen.getUsername());
+		cookie.setMaxAge(60 * 60 * 24);
+		response.addCookie(cookie);
 		session.setAttribute("user", service);
 		session.setMaxInactiveInterval(86400);
-		return "redirect:/api/employee/checkin";
+
+		reAt.addFlashAttribute("alerted", "success");
+		reAt.addFlashAttribute("message", "Check-in thành công.");
+		return mav;
 	}
 
 	@RequestMapping(params = "checkout")
-	public String checkOutUpdate(HttpSession session, Model model) {
+	public ModelAndView checkOutUpdate(HttpSession session, Model model, HttpServletRequest req,
+			RedirectAttributes reAt, ModelAndView mav) {
 		if (session.getAttribute("account") == null) {
-			return "redirect:/api/account/login";
+			return new ModelAndView("redirect:/api/account/login");
 		}
-
-		if (CheckInAdd.inCheckIn.getKeyGenerate() >= 0) {
+		mav = new ModelAndView("redirect:/api/employee/checkin");
+		if (CheckInAdd.inCheckIn.getKeyGenerate() == 0) {
+			reAt.addFlashAttribute("alerted", "warning");
+			reAt.addFlashAttribute("message", "Vui lòng Check-in");
+		} else {
 			CheckOutUpdateRequest request = new CheckOutUpdateRequest();
 			request.setId(CheckInAdd.inCheckIn.getKeyGenerate());
-			service.updateCheckIn(request);
-		} else {
-			model.addAttribute("message", "Bạn chưa checkin");
+			Cookie[] cookies = req.getCookies();
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("userCookie")) {
+					service.updateCheckIn(request);
+					reAt.addFlashAttribute("alerted", "success");
+					reAt.addFlashAttribute("message", "Check-out thành công.");
+					break;
+				} else {
+					reAt.addFlashAttribute("alerted", "warning");
+					reAt.addFlashAttribute("message", "Session time out...");
+					System.out.println("Time out account user: " + userAuthen.getUsername());
+				}
+			}
+			return mav;
 		}
 
-		return "redirect:/api/employee/checkin";
+		return mav;
 	}
-
-	public static void hourWorkOneDay(CheckInGetAllResponse data) throws Exception {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-
-		java.util.Date date = new java.util.Date(sdf.parse(data.getDate()).getTime());
-		java.util.Date time1 = dateFormat.parse(data.getCheck_in_time());
-		java.util.Date time2 = dateFormat.parse(data.getCheck_out_time());
-
-		Calendar calendarDate = Calendar.getInstance();
-		Calendar calendarTime1 = Calendar.getInstance();
-		Calendar calendarTime2 = Calendar.getInstance();
-		calendarDate.setTime(date);
-		calendarTime1.setTime(time1);
-		calendarTime2.setTime(time2);
-
-		long diff = time2.getTime() - time1.getTime();
-
-		long diffSeconds = diff / 1000 % 60;
-		long diffMinutes = diff / (60 * 1000) % 60;
-		long diffHours = diff / (60 * 60 * 1000) % 24;
-
-	}
-
-	public static void main(String[] args) {
-		CheckInGetAllResponse data = new CheckInGetAllResponse();
-		data.setDate("2019-02-02");
-		data.setCheck_in_time("08:30:03");
-		data.setCheck_out_time("08:30:04");
-		try {
-			hourWorkOneDay(data);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 }

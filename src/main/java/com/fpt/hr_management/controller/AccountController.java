@@ -10,17 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fpt.hr_management.daoImpl.AccountImpl;
-import com.fpt.hr_management.daoImpl.account.AccountLogin;
+import com.fpt.hr_management.daoImpl.account.AccountChangePassword;
 import com.fpt.hr_management.daoImpl.account.AccountRegister;
 import com.fpt.hr_management.daoImpl.account.AccountResetPassword;
 import com.fpt.hr_management.daoImpl.account.AccountUpdate;
 import com.fpt.hr_management.daoImpl.authentication.AccountResetEntity;
 import com.fpt.hr_management.daoImpl.authentication.AuthenticationAccount;
+import com.fpt.hr_management.listener.request.account.AccountChangePasswordRequest;
 import com.fpt.hr_management.listener.request.account.AccountLoginRequest;
-import com.fpt.hr_management.listener.request.account.AccountVerifyPasswordRequest;
 import com.fpt.hr_management.listener.request.account.AccountResetPasswordRequest;
+import com.fpt.hr_management.listener.request.account.AccountVerifyPasswordRequest;
 import com.fpt.hr_management.listener.response.account.AccountRegisterGetEmployeeNameResponse;
 import com.fpt.hr_management.listener.response.account.AccountRegisterGetRoleResponse;
 import com.fpt.hr_management.model.account.Account;
@@ -37,6 +39,7 @@ public class AccountController extends AuthenticationAccount {
 	@RequestMapping("login")
 	public String login(HttpSession session) {
 		if (session.getAttribute("account") != null) {
+
 			return "redirect:/api/employee/get";
 		}
 
@@ -47,22 +50,64 @@ public class AccountController extends AuthenticationAccount {
 	public String loginForm(@RequestParam("username") String username, @RequestParam("password") String password,
 			Model model, HttpSession session) {
 
-		AccountLogin account = new AccountLogin();
-		AccountLoginRequest request = new AccountLoginRequest();
-		request.setUsername(username);
-		request.setPassword(password);
-		account.login(request);
-
-		model.addAttribute("roleName", userAuthen.getRoleName());
-		model.addAttribute("roleId", userAuthen.getRoleId());
-		session.setAttribute("account", userAuthen.getUsername());
-		session.setMaxInactiveInterval(3600);
-		if (userAuthen.getRoleName() == null) {
-			return "account/login";
-
+		if (session.getAttribute("account") != null) {
+			return "redirect:/api/employee/get";
+		} else {
+			if (login(new AccountLoginRequest(username, password))) {
+				model.addAttribute("roleName", userAuthen.getRoleName());
+				model.addAttribute("roleId", userAuthen.getRoleId());
+				session.setAttribute("account", userAuthen.getUsername());
+				session.setMaxInactiveInterval(0);
+				return "redirect:/api/employee/get";
+			} else {
+				return "redirect:/api/account/login";
+			}
 		}
 
-		return "redirect:/api/employee/get";
+	}
+
+	@RequestMapping("user-change-password")
+	public String changePasswordForm(HttpSession session) {
+		if (sessionInvalid(session)) {
+			return "redirect:/api/account/login";
+		}
+		return "account/user-change-password";
+	}
+
+	@RequestMapping(params = "changePassword", method = RequestMethod.POST)
+	public ModelAndView doChangePassword(HttpSession session, RedirectAttributes reAt, ModelAndView mav,
+			@RequestParam("current_password") String current_password, @RequestParam("new_password") String newPassword,
+			@RequestParam("re_new_password") String re_new_password) {
+		if (sessionInvalid(session)) {
+			return new ModelAndView("redirect:/api/account/login");
+		}
+		AccountChangePassword accountService = new AccountChangePassword();
+		try {
+			if (accountService.isPasswordAccount(current_password)) {
+				if (newPassword.equalsIgnoreCase(re_new_password)) {
+					AccountChangePasswordRequest request = new AccountChangePasswordRequest();
+					request.setUser_role_id(userAuthen.getUser_role_id());
+					request.setPassword(newPassword);
+
+					accountService.changePassword(request);
+					reAt.addFlashAttribute("message", "Đổi mật khẩu thành công.");
+					reAt.addFlashAttribute("alerted", "success");
+				} else {
+					reAt.addFlashAttribute("message", "Xác nhận mật khẩu mới không hợp lệ.");
+					reAt.addFlashAttribute("alerted", "warning");
+				}
+
+			} else {
+				reAt.addFlashAttribute("message", "Mật khẩu cũ không chính xác.");
+				reAt.addFlashAttribute("alerted", "warning");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		mav = new ModelAndView("redirect:/api/account/user-change-password");
+		return mav;
+
 	}
 
 	/**
@@ -75,7 +120,6 @@ public class AccountController extends AuthenticationAccount {
 			List<AccountRegisterGetRoleResponse> listRole = service.getListRole();
 			model.addAttribute("employee", listEmployee);
 			model.addAttribute("role", listRole);
-
 			return "account/register";
 		}
 
@@ -84,9 +128,7 @@ public class AccountController extends AuthenticationAccount {
 
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
-		if (session.getAttribute("account") != null) {
-			session.removeAttribute("account");
-		}
+		session.removeAttribute("account");
 		return "redirect:/api/account/login";
 	}
 

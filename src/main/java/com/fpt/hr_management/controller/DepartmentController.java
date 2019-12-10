@@ -33,7 +33,6 @@ public class DepartmentController extends AuthenticationAccount {
 		if (session.getAttribute("account") != null) {
 			List<DepartmentListGetAllResponse> listDepartment = service.departmentListGetAll();
 			model.addAttribute("listDepartment", listDepartment);
-
 			model.addAttribute("roleId", userAuthen.getRoleId());
 			return "department/list-department";
 		} else {

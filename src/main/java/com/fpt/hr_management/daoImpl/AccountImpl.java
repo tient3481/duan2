@@ -9,7 +9,7 @@ import com.fpt.hr_management.daoImpl.account.AccountGetOne;
 import com.fpt.hr_management.daoImpl.account.AccountListGetAll;
 import com.fpt.hr_management.daoImpl.account.AccountLogin;
 import com.fpt.hr_management.daoImpl.account.AccountRegisterEmployeeGetName;
-import com.fpt.hr_management.daoImpl.account.AccountRegisterRoleGet;
+import com.fpt.hr_management.daoImpl.account.AccountRegisterRoleGetName;
 import com.fpt.hr_management.daoImpl.account.AccountResetPassword;
 import com.fpt.hr_management.daoImpl.account.AccountUpdate;
 import com.fpt.hr_management.listener.request.account.AccountAddRequest;
@@ -54,7 +54,7 @@ public class AccountImpl implements DaoAccount {
 	}
 
 	public List<AccountRegisterGetRoleResponse> getListRole() {
-		AccountRegisterRoleGet service = new AccountRegisterRoleGet();
+		AccountRegisterRoleGetName service = new AccountRegisterRoleGetName();
 		return service.getListRole();
 	}
 

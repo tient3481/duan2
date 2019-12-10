@@ -16,15 +16,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fpt.hr_management.daoImpl.AllowancesImpl;
 import com.fpt.hr_management.daoImpl.EmployeeImpl;
 import com.fpt.hr_management.daoImpl.LeaveImpl;
 import com.fpt.hr_management.daoImpl.RelationsPersonalImpl;
 import com.fpt.hr_management.daoImpl.account.AccountLogin;
 import com.fpt.hr_management.daoImpl.account.AccountRegisterEmployeeGetName;
+import com.fpt.hr_management.daoImpl.allowances.AllowanceGetOne;
 import com.fpt.hr_management.daoImpl.department.DepartmentEmployeeGetOne;
 import com.fpt.hr_management.daoImpl.employee.EmployeeGetOne;
 import com.fpt.hr_management.daoImpl.employee.EmployeeValidator;
 import com.fpt.hr_management.daoImpl.employee_skill.SkillEmployeeGetOne;
+import com.fpt.hr_management.daoImpl.salary.SalaryGetOne;
+import com.fpt.hr_management.listener.request.allowances.AllowanceGetOneByEmployeeRequest;
+import com.fpt.hr_management.listener.request.allowances.AllowanceGetOneRequest;
 import com.fpt.hr_management.listener.request.department.DepartmentEmployeeGetOneRequest;
 import com.fpt.hr_management.listener.request.employee.EmployeeAddRequest;
 import com.fpt.hr_management.listener.request.employee.EmployeeDeleteRequest;
@@ -32,23 +37,29 @@ import com.fpt.hr_management.listener.request.employee.EmployeeGetOneRequest;
 import com.fpt.hr_management.listener.request.employee.EmployeeUpdateRequest;
 import com.fpt.hr_management.listener.request.employee_skill.SkillEmployeeGetOneRequest;
 import com.fpt.hr_management.listener.request.relations_personnal.RPGetOneRequest;
+import com.fpt.hr_management.listener.request.salary.SalaryListGetOneRequest;
 import com.fpt.hr_management.listener.response.account.AccountRegisterGetEmployeeNameResponse;
+import com.fpt.hr_management.listener.response.allowances.AllowanceGetOneByEmployeeResponse;
+import com.fpt.hr_management.listener.response.allowances.AllowanceTypeGetOneResponse;
 import com.fpt.hr_management.listener.response.department.DepartmentEmployeeGetOneResponse;
 import com.fpt.hr_management.listener.response.employee.EmployeeGetAllResponse;
 import com.fpt.hr_management.listener.response.employee.EmployeeGetOneResponse;
 import com.fpt.hr_management.listener.response.employee_skill.SkillEmployeeGetOneResponse;
 import com.fpt.hr_management.listener.response.leave.LeaveListGetAllResponse;
 import com.fpt.hr_management.listener.response.relations_personal.RPListGetOneResponse;
+import com.fpt.hr_management.listener.response.salary.SalaryListGetOneResponse;
 
 @Controller
 @RequestMapping("/api/employee")
 public class EmployeeController extends AccountLogin {
 
-	private static EmployeeImpl service = new EmployeeImpl();
-	private static LeaveImpl serviceLeave = new LeaveImpl();
-	private static RelationsPersonalImpl serviceRP = new RelationsPersonalImpl();
+	private EmployeeImpl service = new EmployeeImpl();
+	private LeaveImpl serviceLeave = new LeaveImpl();
+	private RelationsPersonalImpl serviceRP = new RelationsPersonalImpl();
+	private AllowancesImpl serviceAllowance = new AllowancesImpl();
 	private static final String pattern = "yyyy-MM-dd";
 	private static EmployeeValidator validator = new EmployeeValidator();
+	private int employeeId;
 
 	@RequestMapping("/get")
 	public String getListEmployee(Model model, HttpSession session) {
@@ -146,6 +157,7 @@ public class EmployeeController extends AccountLogin {
 
 	@RequestMapping(value = "update/{id}")
 	public String updateEmployee(@PathVariable("id") int id, Model model, RedirectAttributes redirect) {
+		employeeId = id;
 
 		// Basic information employee
 		List<EmployeeGetOneResponse> infoEmployee = new ArrayList<EmployeeGetOneResponse>();
@@ -193,6 +205,24 @@ public class EmployeeController extends AccountLogin {
 		listRPEmployee = serviceRP.listRP(requestRP);
 		model.addAttribute("listRPEmployee", listRPEmployee);
 
+		// Allowance info
+		List<AllowanceGetOneByEmployeeResponse> listAllownceEmployeeInfo = new ArrayList<AllowanceGetOneByEmployeeResponse>();
+		AllowanceGetOneByEmployeeRequest requestAllowance = new AllowanceGetOneByEmployeeRequest(id);
+		listAllownceEmployeeInfo = serviceAllowance.allowancesGetOne(requestAllowance);
+		model.addAttribute("listAllownceEmployeeInfo", listAllownceEmployeeInfo);
+
+		List<AllowanceTypeGetOneResponse> type = new ArrayList<AllowanceTypeGetOneResponse>();
+		for (int j = 0; j < listAllownceEmployeeInfo.size(); j++) {
+			type = new AllowanceGetOne().getOne(new AllowanceGetOneRequest(listAllownceEmployeeInfo.get(j).getSaId()));
+		}
+
+		model.addAttribute("type", type);
+
+		// SalaryInfo
+		List<SalaryListGetOneResponse> listSalary = new SalaryGetOne().getSalary(new SalaryListGetOneRequest(id));
+		model.addAttribute("listSalary", listSalary);
+		model.addAttribute("roleId", userAuthen.getRoleId());
+
 		return "employee/profile";
 	}
 
@@ -203,7 +233,8 @@ public class EmployeeController extends AccountLogin {
 			@RequestParam("address") String address, @RequestParam("gender") int sex,
 			@RequestParam("employee_date") String employee_date, @RequestParam("end_date") String end_date,
 			@RequestParam("employee_type_id") int employee_type_id, @RequestParam("status") int status,
-			@RequestParam("note") String note, HttpSession session, RedirectAttributes redirect, ModelAndView mav) {
+			@RequestParam("note") String note, @RequestParam("base_salary") long base_salary, HttpSession session,
+			RedirectAttributes redirect, ModelAndView mav) {
 
 		if (session.getAttribute("account") == null) {
 			return new ModelAndView("redirect:/api/account/login");
@@ -245,18 +276,18 @@ public class EmployeeController extends AccountLogin {
 			if (!validator.dob(validator.getYear(dobDateSql))) {
 				redirect.addFlashAttribute("message", "Ngày sinh không hợp lệ.");
 				redirect.addFlashAttribute("alerted", "warning");
-				mav = new ModelAndView("redirect:/api/employee/update/" + userAuthen.getUser_id());
+				mav = new ModelAndView("redirect:/api/employee/update/" + employeeId);
 				return mav;
 			}
 
-			request = new EmployeeUpdateRequest(userAuthen.getUser_id(), first_name, middle_name, last_name, phone,
-					email, dobDateSql, address, sex, employeeDateSql, endDateSql, employee_type_id, status, note,
+			request = new EmployeeUpdateRequest(employeeId, first_name, middle_name, last_name, phone, email,
+					dobDateSql, address, sex, employeeDateSql, endDateSql, employee_type_id, status, note, base_salary,
 					last_modifier_by);
 
 			service.employeeUpdate(request);
 			redirect.addFlashAttribute("message", "Cập nhật thành công.");
 			redirect.addFlashAttribute("alerted", "success");
-			mav = new ModelAndView("redirect:/api/employee/update/" + userAuthen.getUser_id());
+			mav = new ModelAndView("redirect:/api/employee/update/" + employeeId);
 
 		} catch (Exception e) {
 			e.printStackTrace();

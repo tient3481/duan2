@@ -2,6 +2,7 @@ package com.fpt.hr_management.daoImpl.authentication;
 
 public class AuthenticationEntity {
 
+	protected int user_role_id;
 	protected int user_id;
 	protected String username;
 	protected String password;
@@ -66,12 +67,20 @@ public class AuthenticationEntity {
 		this.user_id = user_id;
 	}
 
+	public int getUser_role_id() {
+		return user_role_id;
+	}
+
+	public void setUser_role_id(int user_role_id) {
+		this.user_role_id = user_role_id;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("AuthenticationEntity [user_id=").append(user_id).append(", username=").append(username)
-				.append(", password=").append(password).append(", roleId=").append(roleId).append(", roleName=")
-				.append(roleName).append("]");
+		builder.append("AuthenticationEntity [user_role_id=").append(user_role_id).append(", user_id=").append(user_id)
+				.append(", username=").append(username).append(", password=").append(password).append(", roleId=")
+				.append(roleId).append(", roleName=").append(roleName).append("]");
 		return builder.toString();
 	}
 

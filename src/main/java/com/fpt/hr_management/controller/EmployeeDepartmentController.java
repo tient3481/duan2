@@ -89,7 +89,7 @@ public class EmployeeDepartmentController extends AuthenticationAccount {
 				request.setLast_modifier_by(userAuthen.getUsername());
 				service.addEmployeeDepartment(request);
 
-				reAt.addFlashAttribute("alert", "success");
+				reAt.addFlashAttribute("alerted", "success");
 				reAt.addFlashAttribute("message", "Thêm thành công.");
 
 				return mav = new ModelAndView("redirect:/api/employee/department/add/" + employeeId);
@@ -114,15 +114,16 @@ public class EmployeeDepartmentController extends AuthenticationAccount {
 			EmployeeDepartmentDeleteRequest request = new EmployeeDepartmentDeleteRequest(id);
 			try {
 				service.deleteEmployeeDepartment(request);
-				redirect.addFlashAttribute("alert", "success");
+				redirect.addFlashAttribute("alerted", "success");
 				redirect.addFlashAttribute("message", "Xóa thành công.");
+				return new ModelAndView("redirect:/api/employee/update/" + id);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} else {
 			return new ModelAndView("redirect:/api/authorized/403");
 		}
+		return null;
 
-		return new ModelAndView("redirect:/api/employee/update/" + id);
 	}
 }

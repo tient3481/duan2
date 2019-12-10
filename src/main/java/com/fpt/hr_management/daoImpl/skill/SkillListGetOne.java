@@ -18,7 +18,7 @@ public class SkillListGetOne {
 
 	public List<SkillListGetOneResponse> get(SkillListGetOneRequest request) {
 		SkillListGetOneResponse skillInfo = null;
-		String sql = "SELECT * FROM department WHERE id = ?";
+		String sql = "select s.*, cs.name as categoryName from skill s left join category_skill cs on s.category_id = cs.id where s.id = ?;";
 		try {
 			con = DbConnection.getConnection();
 			if (con != null) {
@@ -32,13 +32,12 @@ public class SkillListGetOne {
 					skillInfo.setName(rs.getString("name"));
 					skillInfo.setDescription(rs.getString("description"));
 					skillInfo.setCategory_id(rs.getInt("category_id"));
+					skillInfo.setCategoryName(rs.getString("categoryName"));
 
 					listSkillGetOne.add(skillInfo);
 				}
-				if (listSkillGetOne.size() > 0) {
-					System.out.println(listSkillGetOne.toString());
-				}
-
+				
+				System.out.println(listSkillGetOne.toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -48,4 +47,9 @@ public class SkillListGetOne {
 
 		return listSkillGetOne;
 	}
+	
+//	public static void main(String[] args) {
+//		SkillListGetOne main = new SkillListGetOne();
+//		main.get(new SkillListGetOneRequest(2));
+//	}
 }

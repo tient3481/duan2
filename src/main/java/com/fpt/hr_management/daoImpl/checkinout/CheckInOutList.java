@@ -18,7 +18,7 @@ public class CheckInOutList {
 	private List<CheckInGetAllResponse> listCheck = new ArrayList<CheckInGetAllResponse>();
 
 	public List<CheckInGetAllResponse> listCheck(CheckInUserRequest request) {
-		String sql = "select c.id, c.user_id, e.full_name as employee_name, c.check_in_time, c.check_out_time, c.date from employee e join check_in c on c.user_id = e.id where e.id =?;";
+		String sql = "select c.id, c.user_id, e.full_name as employee_name, c.check_in_time, c.check_out_time, c.date, c.total_time from employee e join check_in_history c on c.user_id = e.id where e.id =?;";
 		CheckInGetAllResponse checkInOut;
 		try {
 			con = DbConnection.getConnection();
@@ -33,6 +33,7 @@ public class CheckInOutList {
 					checkInOut.setEmployee_name(rs.getString("employee_name"));
 					checkInOut.setCheck_in_time(rs.getString("check_in_time"));
 					checkInOut.setCheck_out_time(rs.getString("check_out_time"));
+					checkInOut.setTotal_time(rs.getString("total_time"));
 					checkInOut.setDate(rs.getString("date"));
 
 					listCheck.add(checkInOut);
