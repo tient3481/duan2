@@ -112,8 +112,6 @@ public class HolidayGetTotal {
 		}
 		return totalLunch;
 	}
-	
-	
 
 	public static void main(String[] args) {
 		HolidayGetTotal main = new HolidayGetTotal();

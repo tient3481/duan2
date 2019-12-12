@@ -23,8 +23,10 @@ public class TimeKeepingGetAll {
 	private int keyGenerte = 0;
 	private List<TimeKeepingGetAllResponse> listCheck;
 
-	public boolean timeKeeping(TimeKeepingGetAllRequest request) {
+	private int employeeId;
 
+	public boolean timeKeeping(TimeKeepingGetAllRequest request) {
+		employeeId = request.getEmployeeId();
 		String sql = "select e.id as employeeId, e.full_name as employeeName,"
 				+ " MIN(ci.check_in_time) as checkInFirst,"
 				+ " MAX(ci.check_out_time) as checkOutLast, ci.date as date " + " from check_in_history ci"
@@ -53,10 +55,9 @@ public class TimeKeepingGetAll {
 						addTimeKeeping(); // generate key from database
 						getTotalTime();// using: keyGenerate from addTimeKeeping function
 						updateTotalTime();
+						insertHoliday();
 						updateLunch(1, getDateNow());
 						return true;
-					} else {
-						updateLunch(0, getDateNow());
 					}
 				}
 			}
@@ -76,6 +77,25 @@ public class TimeKeepingGetAll {
 		return dateNow;
 	}
 
+	private void insertHoliday() throws Exception {
+		String sql = "INSERT INTO holiday_info(employee_id, date) VALUES (?,?);";
+
+		try {
+			con = DbConnection.getConnection();
+			if (con != null) {
+				pstm = con.prepareStatement(sql);
+				pstm.setInt(1, employeeId);
+				pstm.setString(2, getDateNow());
+				pstm.executeUpdate();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbConnection.close(con, pstm, null, rs);
+		}
+	}
+
 	public void updateLunch(int approved, String date) throws Exception {
 		String sql = "UPDATE `hr_management`.`holiday_info` SET `lunch` = ? where `date` = '" + date + "';";
 
@@ -87,7 +107,9 @@ public class TimeKeepingGetAll {
 					pstm.setInt(1, 1);
 
 					pstm.executeUpdate();
+					System.out.println("cap nhật ăn trưa thành công" + approved);
 				}
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -103,6 +125,7 @@ public class TimeKeepingGetAll {
 					pstm.setInt(1, 0);
 
 					pstm.executeUpdate();
+
 				}
 
 			} catch (SQLException e) {

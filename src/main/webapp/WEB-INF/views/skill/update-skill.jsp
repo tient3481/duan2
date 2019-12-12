@@ -256,7 +256,7 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"> Update skill</i>
+						<i class="fas fa-table"> Cập nhật kỹ năng</i>
 					</div>
 					<div class="card-body">
 						<!-- Grid row -->
@@ -290,8 +290,7 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 													<input type="text" class="form-control" id="1" name="name"
 														value="${listSkillGetOne.getName()}" required="required"
 														placeholder="Tên kỹ năng"> <label for="5">
-
-													</label>
+														SkillName </label>
 												</div>
 											</div>
 										</div>
@@ -315,7 +314,7 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 							</c:forEach>
 
 							<button type="submit" name="updateSkill"
-								class="btn btn-outline-warning">Update</button>
+								class="btn btn-outline-warning" style="margin-left: 50%;">Update</button>
 							<br>
 							<c:if test="${not empty message}">
 								<div class="alert alert-${alerted}" role="alert">

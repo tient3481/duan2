@@ -18,5 +18,5 @@ public interface DaoLeave {
 
 	public List<LeaveListGetAllResponse> getReasonName();
 
-	public List<LeaveEmployeeGetOneResponse> getOne(LeaveGetOneRequest request);
+	public List<LeaveEmployeeGetOneResponse> getOne(LeaveGetOneRequest request, int optionId);
 }

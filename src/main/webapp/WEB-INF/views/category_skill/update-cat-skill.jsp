@@ -256,7 +256,7 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"> Update skill</i>
+						<i class="fas fa-table"> Cập nhật nhóm kỹ năng </i>
 					</div>
 					<div class="card-body">
 						<!-- Grid row -->
@@ -274,7 +274,7 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 													<input type="text" class="form-control" id="1" name="name"
 														value="${listSkillCatGetOne.getName()}"
 														required="required" placeholder="Tên kỹ năng"> <label
-														for="5"> </label>
+														for="5">CategoryName </label>
 												</div>
 											</div>
 										</div>

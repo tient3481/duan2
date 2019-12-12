@@ -71,6 +71,13 @@
 						</div>
 					</div>
 					<button type="submit" name="createAccount" class="btn btn-primary">Register</button>
+
+					<c:if test="${not empty message}">
+						<div class="alert alert-${alerted}" role="alert"
+							style="margin-top: 10px;">
+							Thông báo! <a href="#" class="alert-link"> ${message} </a>
+						</div>
+					</c:if>
 				</form>
 				<div class="text-center">
 					<a class="d-block small mt-3" href="login.html">Login Page</a> <a

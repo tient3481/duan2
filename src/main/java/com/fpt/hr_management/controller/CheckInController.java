@@ -57,7 +57,7 @@ public class CheckInController extends AuthenticationAccount {
 		cookie.setMaxAge(60 * 60 * 24);
 		response.addCookie(cookie);
 		session.setAttribute("user", service);
-		session.setMaxInactiveInterval(86400);
+		session.setMaxInactiveInterval(0);
 
 		reAt.addFlashAttribute("alerted", "success");
 		reAt.addFlashAttribute("message", "Check-in thành công.");
@@ -87,7 +87,7 @@ public class CheckInController extends AuthenticationAccount {
 				} else {
 					reAt.addFlashAttribute("alerted", "warning");
 					reAt.addFlashAttribute("message", "Session time out...");
-					System.out.println("Time out account user: " + userAuthen.getUsername());
+					System.out.println("Time out account for user: " + userAuthen.getUsername());
 				}
 			}
 			return mav;

@@ -47,20 +47,25 @@ public class AccountController extends AuthenticationAccount {
 	}
 
 	@RequestMapping(params = "loginAccount", method = RequestMethod.POST)
-	public String loginForm(@RequestParam("username") String username, @RequestParam("password") String password,
-			Model model, HttpSession session) {
+	public ModelAndView loginForm(@RequestParam("username") String username, @RequestParam("password") String password,
+			Model model, HttpSession session, RedirectAttributes redirect) throws Exception {
 
 		if (session.getAttribute("account") != null) {
-			return "redirect:/api/employee/get";
+			return new ModelAndView("redirect:/api/employee/get");
 		} else {
 			if (login(new AccountLoginRequest(username, password))) {
 				model.addAttribute("roleName", userAuthen.getRoleName());
 				model.addAttribute("roleId", userAuthen.getRoleId());
 				session.setAttribute("account", userAuthen.getUsername());
 				session.setMaxInactiveInterval(0);
-				return "redirect:/api/employee/get";
+				redirect.addFlashAttribute("message", "Đăng nhập thành công");
+				redirect.addFlashAttribute("alerted", "success");
+				Thread.sleep(2000);
+				return new ModelAndView("redirect:/api/employee/get");
 			} else {
-				return "redirect:/api/account/login";
+				redirect.addFlashAttribute("message", "Tài khoản không tồn tại");
+				redirect.addFlashAttribute("alerted", "warning");
+				return new ModelAndView("redirect:/api/account/login");
 			}
 		}
 
@@ -114,16 +119,23 @@ public class AccountController extends AuthenticationAccount {
 	 * @param session Permission: ADMIN
 	 */
 	@RequestMapping("/register")
-	public String register(HttpSession session, Model model) {
-		if (session.getAttribute("account") != null && userAuthen.getRoleId() == ADMIN) {
+	public ModelAndView register(HttpSession session, Model model, RedirectAttributes redirect) throws Exception {
+		if (session.getAttribute("account") == null) {
+			redirect.addFlashAttribute("message", "Vui lòng đăng nhập");
+			redirect.addFlashAttribute("alerted", "warning");
+			return new ModelAndView("redirect:/api/account/login");
+		}
+
+		if (userAuthen.getRoleId() == ADMIN) {
 			List<AccountRegisterGetEmployeeNameResponse> listEmployee = service.getListEmployeeName();
 			List<AccountRegisterGetRoleResponse> listRole = service.getListRole();
 			model.addAttribute("employee", listEmployee);
 			model.addAttribute("role", listRole);
-			return "account/register";
+			return new ModelAndView("account/register");
+		} else {
+			return new ModelAndView("redirect:/api/authorized/403");
 		}
 
-		return "login";
 	}
 
 	@RequestMapping("/logout")
@@ -133,22 +145,18 @@ public class AccountController extends AuthenticationAccount {
 	}
 
 	@RequestMapping(params = "createAccount")
-	public String createAccount(HttpSession session, Model model, @RequestParam("username") String username,
+	public ModelAndView createAccount(HttpSession session, Model model, @RequestParam("username") String username,
 			@RequestParam("password") String password, @RequestParam("role_id") int role_id,
-			@RequestParam("employee_id") int employee_id) {
+			@RequestParam("employee_id") int employee_id, RedirectAttributes redirect) throws Exception {
 
-		Account account = new Account();
-		account.setUsername(username);
-		account.setPassword(password);
-		account.setRole_id(role_id);
-		account.setEmployee_id(employee_id);
-		account.setCreated_by(userAuthen.getUsername());
-		account.setLast_modifier_by(userAuthen.getUsername());
+		String created_by = userAuthen.getUsername();
+		String last_modifier_by = userAuthen.getUsername();
+		Account account = new Account(role_id, employee_id, username, password, created_by, last_modifier_by);
+		AccountRegister.registerAccount(account);
 
-		AccountRegister regAccount = new AccountRegister();
-		regAccount.registerAccount(account);
-		model.addAttribute("message", "Register success.");
-		return "account/register";
+		redirect.addFlashAttribute("message", "Đăng ký thành công");
+		redirect.addFlashAttribute("alerted", "success");
+		return new ModelAndView("redirect:/api/account/register");
 	}
 
 	/**
@@ -179,10 +187,12 @@ public class AccountController extends AuthenticationAccount {
 	}
 
 	@RequestMapping(params = "submitEmail")
-	public String doForgotPassword(@RequestParam("emailReset") String emailReset, Model model) {
+	public ModelAndView doForgotPassword(@RequestParam("emailReset") String emailReset, Model model,
+			RedirectAttributes redirect) {
 		if (accountResetPassword.getEmailAccount(emailReset) == null) {
-			model.addAttribute("message", "Email not found.");
-			return "account/forgotpassword";
+			redirect.addFlashAttribute("message", "Email không tồn tại trên hệ thống");
+			redirect.addFlashAttribute("alerted", "warning");
+			return new ModelAndView("redirect:/api/account/forgot-password");
 		}
 
 		accountResetEntity.setEmail(emailReset);
@@ -192,25 +202,29 @@ public class AccountController extends AuthenticationAccount {
 			e.printStackTrace();
 		}
 
-		return "/account/verifycode";
+		return new ModelAndView("/account/verifycode");
 
 	}
 
 	@RequestMapping(params = "submitCode")
-	public String doSubmitCode(@RequestParam("code") int code, Model model) {
+	public ModelAndView doSubmitCode(@RequestParam("code") int code, RedirectAttributes redirect) {
 		if (accountResetPassword.submitCode(code)) {
-			return "account/changepassword";
+
+			return new ModelAndView("account/changepassword");
+		} else {
+			redirect.addFlashAttribute("message", "Mã xác nhận không hợp lệ, vui lòng thử lại");
+			redirect.addFlashAttribute("alerted", "warning");
+			return new ModelAndView("redirect:/api/account/verify-code");
 		}
-		return "account/verifycode";
 
 	}
 
 	@RequestMapping(params = "submitPassword")
 	public ModelAndView doSubmitPassword(Model model, @RequestParam("password") String password,
-			@RequestParam("re-password") String verifyPassword) {
+			@RequestParam("re-password") String verifyPassword, RedirectAttributes redirect) {
 
-		ModelAndView modelAndViewSuccess = new ModelAndView("account/login");
-		ModelAndView modelAndViewResetCode = new ModelAndView("account/verifycode");
+		ModelAndView modelAndViewReset = new ModelAndView("redirect:/api/account/change-password");
+		ModelAndView modelAndViewResetSuccess = new ModelAndView("redirect:/api/account/login");
 		AccountVerifyPasswordRequest request = new AccountVerifyPasswordRequest();
 		request.setPassword(password);
 		request.setVerifyPassword(verifyPassword);
@@ -219,10 +233,13 @@ public class AccountController extends AuthenticationAccount {
 					password, userAuthen.getUsername());
 
 			account.updatePasswordByEmail(requestEmail);
-			modelAndViewSuccess.addObject("message", "Change password success.");
-			return modelAndViewSuccess;
+			redirect.addFlashAttribute("message", "Đổi mật khẩu thành công");
+			redirect.addFlashAttribute("alerted", "success");
+			return modelAndViewResetSuccess;
 		} else {
-			return modelAndViewResetCode;
+			redirect.addFlashAttribute("message", "Xác nhận mật khẩu không đúng");
+			redirect.addFlashAttribute("alerted", "warning");
+			return modelAndViewReset;
 		}
 	}
 

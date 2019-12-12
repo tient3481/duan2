@@ -174,11 +174,11 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 				<div style="width: 100%">
 					<ul class="nav nav-tabs">
 
-						<li class="nav-item"><a href="" data-target="#account"
+						<!-- 		<li class="nav-item"><a href="" data-target="#account"
 							data-toggle="tab" class="nav-link active">Thông tin tài khoản</a></li>
-
+ -->
 						<li class="nav-item"><a href="" data-target="#profile"
-							data-toggle="tab" class="nav-link">Thông tin cơ bản</a></li>
+							data-toggle="tab" class="nav-link active">Thông tin cơ bản</a></li>
 
 						<li class="nav-item"><a href="" data-target="#department"
 							data-toggle="tab" class="nav-link">Thông tin phòng ban</a></li>
@@ -202,10 +202,10 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 							data-toggle="tab" class="nav-link">Xem bảng lương</a></li>
 
 					</ul>
-					<div class="tab-content py-5">
-						<div class="tab-pane" id="account">Updating</div>
-
-						<div class="tab-pane" id="profile">
+					<div class="tab-content py-2">
+						<!-- 	<div class="tab-pane " id="account">Updating</div>
+ -->
+						<div class="tab-pane active" id="profile">
 							<form action="${pageContext.request.contextPath}/api/employee">
 
 								<c:forEach var="infoEmployee" items="${infoEmployee}">
@@ -447,7 +447,10 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 						</div>
 						<!-- ACCOUNT SKILL -->
 						<div class="tab-pane" id="skill">
-
+							<a
+								href="${pageContext.request.contextPath}/api/employee/skill/add/${idAccount}"
+								style="float: right;" class="btn btn-outline-info" role="button">Thêm
+								mới </a>
 							<table class="table">
 								<thead>
 									<tr>
@@ -456,6 +459,9 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 										<th scope="col">Bắt đầu</th>
 										<th scope="col">Kết thúc</th>
 										<th scope="col">Trình độ</th>
+										<c:if test="${roleId == 1}">
+											<th scope="row">Thao tác</th>
+										</c:if>
 									</tr>
 								</thead>
 								<tbody>
@@ -467,6 +473,16 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 
 											<td scope="row">${list.getSkill_end()}</td>
 											<td scope="row">${list.getLevelName()}</td>
+											<c:if test="${roleId == 1}">
+												<td><a
+													href="${pageContext.request.contextPath}/api/employee/skill/updater/${list.getId()}"><button
+															type="button" class="btn btn-outline-warning">Update</button></a>
+													<a
+													href="${pageContext.request.contextPath}/api/employee/skill/deleter/${list.getId()}"><button
+															type="button"
+															onclick="return confirm('Xác nhận xóa kỹ năng: ${list.getSkillName()}')"
+															class="btn btn-outline-danger">Delete</button></a></td>
+											</c:if>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -743,23 +759,27 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 							<table class="table">
 								<thead>
 									<tr>
-										<th scope="col">Tên nhân viên</th>
-										<th scope="col">Tháng</th>
-										<th scope="col">Số ngày làm thực tế</th>
-										<th scope="col">Tổng lương</th>
-										<c:if test="${roleId == 1}">
-											<th scope="col">Thao tác</th>
-										</c:if>
+										<th>Mã NV</th>
+										<th>Họ tên</th>
+										<th>Ngày công thực tế</th>
+										<th>Lương cơ bản</th>
+										<th>HT ăn trưa</th>
+										<th>HT điện thoại</th>
+										<th>HT xăng</th>
+										<th>Lương thực lãnh</th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="list" items="${listSalary}">
+									<c:forEach var="list" items="${salaryDetails}">
 										<tr>
-											<td scope="row">${list.getEmployeeName()}</td>
-											<td scope="row">${list.getMonth()}</td>
-											<td scope="row">${list.getTotalDay()}/26</td>
-											<td scope="row">${list.getTotalSalary()}</td>
-											<td scope="row">Thông tin chi tiết</td>
+											<td>${list.getEmployeeId()}</td>
+											<td>${list.getEmployeeName()}</td>
+											<td>${list.getActualWorkDay()}/26</td>
+											<td>${list.getBaseSalary()}</td>
+											<td>${list.getLunchMoney()}</td>
+											<td>${list.getPhoneMoney()}</td>
+											<td>${list.getGasolineMoney()}</td>
+											<td>${list.getActualSalary()}</td>
 										</tr>
 									</c:forEach>
 								</tbody>

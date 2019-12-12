@@ -269,25 +269,33 @@ ${pageContext.request.contextPath}/api/login">Danh
 					</div>
 				</div>
 
-				<!-- Area Chart Example-->
-				<%-- 	<div class="card mb-3">
-					<div class="card-header">
-						<i class="fas fa-chart-area"></i> Area Chart Example
-					</div>
-					<div class="card-body">
-						<canvas id="myAreaChart" width="100%" height="30"></canvas>
-					</div>
-					<div class="card-footer small text-muted">Updated yesterday
-						at 11:59 PM</div>
-				</div> --%>
-
-				<!-- DataTables Example -->
-
 				<div class="card mb-3">
 					<div class="card-header">
 						<i class="fas fa-table"></i> Thông tin chi tiết bảng lương
 					</div>
 					<br>
+					<form
+						action="${pageContext.request.contextPath}/api/employee/salary">
+						<div class="md-form">
+							<a style="margin-left: 20px; margin-top: 50px;">Lương được
+								tính từ ngày: ${fromDate} đến ${toDate}</a>
+							<button class="btn btn-success" type="submit" name="searchSalary"
+								style="float: right; margin-right: 20px;">
+								<i class="fas fa-search"></i>
+							</button>
+							<input placeholder="Selected date" type="date"
+								style="width: 15%; float: right; margin-right: 20px;"
+								name="toDate" id="date-picker-example"
+								class="form-control datepicker" /> <input
+								placeholder="Selected date" type="date"
+								style="width: 15%; float: right; margin-right: 60px;"
+								name="fromDate" id="date-picker-example"
+								class="form-control datepicker">
+
+						</div>
+
+					</form>
+
 
 					<div class="card-body">
 						<div class="table-responsive">
@@ -304,7 +312,20 @@ ${pageContext.request.contextPath}/api/login">Danh
 										<th>Lương thực lãnh</th>
 									</tr>
 								</thead>
-
+								<c:forEach var="list" items="${salaryDetails}">
+									<tbody>
+										<tr>
+											<td>${list.getEmployeeId()}</td>
+											<td>${list.getEmployeeName()}</td>
+											<td>${list.getActualWorkDay()}</td>
+											<td>${list.getBaseSalary()}</td>
+											<td>${list.getLunchMoney()}</td>
+											<td>${list.getPhoneMoney()}</td>
+											<td>${list.getGasolineMoney()}</td>
+											<td>${list.getActualSalary()}</td>
+										</tr>
+									</tbody>
+								</c:forEach>
 							</table>
 						</div>
 					</div>

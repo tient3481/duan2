@@ -107,4 +107,16 @@ public class SkillEmployeeGetOneResponse {
 		this.skillStartName = skillStartName;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("SkillEmployeeGetOneResponse [id=").append(id).append(", employeeName=").append(employeeName)
+				.append(", employee_id=").append(employee_id).append(", skill_id=").append(skill_id)
+				.append(", skill_start=").append(skill_start).append(", skill_end=").append(skill_end)
+				.append(", level_id=").append(level_id).append(", levelName=").append(levelName).append(", skillName=")
+				.append(skillName).append(", skillEndName=").append(skillEndName).append(", skillStartName=")
+				.append(skillStartName).append("]");
+		return builder.toString();
+	}
+
 }

@@ -1,5 +1,7 @@
 package com.fpt.hr_management.listener.response.salary;
 
+import java.text.NumberFormat;
+
 public class SalaryDetail {
 	private int employeeId;
 	private String employeeName;
@@ -9,6 +11,9 @@ public class SalaryDetail {
 	private long phoneMoney;
 	private long gasolineMoney;
 	private long actualSalary;
+
+	private String fromDate;
+	private String toDate;
 
 	public SalaryDetail() {
 
@@ -42,52 +47,74 @@ public class SalaryDetail {
 		this.employeeName = employeeName;
 	}
 
-	public long getActualWorkDay() {
-		return actualWorkDay;
+	public String getActualWorkDay() {
+		NumberFormat currentLocale = NumberFormat.getInstance();
+		return currentLocale.format(actualWorkDay);
 	}
 
 	public void setActualWorkDay(long actualWorkDay) {
 		this.actualWorkDay = actualWorkDay;
 	}
 
-	public long getBaseSalary() {
-		return baseSalary;
+	public String getBaseSalary() {
+		NumberFormat currentLocale = NumberFormat.getInstance();
+		return currentLocale.format(baseSalary);
 	}
 
 	public void setBaseSalary(long baseSalary) {
 		this.baseSalary = baseSalary;
 	}
 
-	public long getLunchMoney() {
-		return lunchMoney;
+	public String getLunchMoney() {
+		NumberFormat currentLocale = NumberFormat.getInstance();
+		return currentLocale.format(lunchMoney);
 	}
 
 	public void setLunchMoney(long lunchMoney) {
 		this.lunchMoney = lunchMoney;
 	}
 
-	public long getPhoneMoney() {
-		return phoneMoney;
+	public String getPhoneMoney() {
+		NumberFormat currentLocale = NumberFormat.getInstance();
+		return currentLocale.format(phoneMoney);
 	}
 
 	public void setPhoneMoney(long phoneMoney) {
 		this.phoneMoney = phoneMoney;
 	}
 
-	public long getGasolineMoney() {
-		return gasolineMoney;
+	public String getGasolineMoney() {
+		NumberFormat currentLocale = NumberFormat.getInstance();
+		return currentLocale.format(gasolineMoney);
 	}
 
 	public void setGasolineMoney(long gasolineMoney) {
 		this.gasolineMoney = gasolineMoney;
 	}
 
-	public long getActualSalary() {
-		return actualSalary;
+	public String getActualSalary() {
+		NumberFormat currentLocale = NumberFormat.getInstance();
+		return currentLocale.format(actualSalary);
 	}
 
 	public void setActualSalary(long actualSalary) {
 		this.actualSalary = actualSalary;
+	}
+
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
 	}
 
 	@Override

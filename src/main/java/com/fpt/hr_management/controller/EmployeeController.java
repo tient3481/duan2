@@ -20,14 +20,14 @@ import com.fpt.hr_management.daoImpl.AllowancesImpl;
 import com.fpt.hr_management.daoImpl.EmployeeImpl;
 import com.fpt.hr_management.daoImpl.LeaveImpl;
 import com.fpt.hr_management.daoImpl.RelationsPersonalImpl;
-import com.fpt.hr_management.daoImpl.account.AccountLogin;
 import com.fpt.hr_management.daoImpl.account.AccountRegisterEmployeeGetName;
 import com.fpt.hr_management.daoImpl.allowances.AllowanceGetOne;
+import com.fpt.hr_management.daoImpl.authentication.AuthenticationAccount;
 import com.fpt.hr_management.daoImpl.department.DepartmentEmployeeGetOne;
 import com.fpt.hr_management.daoImpl.employee.EmployeeGetOne;
 import com.fpt.hr_management.daoImpl.employee.EmployeeValidator;
 import com.fpt.hr_management.daoImpl.employee_skill.SkillEmployeeGetOne;
-import com.fpt.hr_management.daoImpl.salary.SalaryGetOne;
+import com.fpt.hr_management.daoImpl.salary.SalaryService;
 import com.fpt.hr_management.listener.request.allowances.AllowanceGetOneByEmployeeRequest;
 import com.fpt.hr_management.listener.request.allowances.AllowanceGetOneRequest;
 import com.fpt.hr_management.listener.request.department.DepartmentEmployeeGetOneRequest;
@@ -37,7 +37,7 @@ import com.fpt.hr_management.listener.request.employee.EmployeeGetOneRequest;
 import com.fpt.hr_management.listener.request.employee.EmployeeUpdateRequest;
 import com.fpt.hr_management.listener.request.employee_skill.SkillEmployeeGetOneRequest;
 import com.fpt.hr_management.listener.request.relations_personnal.RPGetOneRequest;
-import com.fpt.hr_management.listener.request.salary.SalaryListGetOneRequest;
+import com.fpt.hr_management.listener.request.salary.SalaryPayRequest;
 import com.fpt.hr_management.listener.response.account.AccountRegisterGetEmployeeNameResponse;
 import com.fpt.hr_management.listener.response.allowances.AllowanceGetOneByEmployeeResponse;
 import com.fpt.hr_management.listener.response.allowances.AllowanceTypeGetOneResponse;
@@ -47,11 +47,11 @@ import com.fpt.hr_management.listener.response.employee.EmployeeGetOneResponse;
 import com.fpt.hr_management.listener.response.employee_skill.SkillEmployeeGetOneResponse;
 import com.fpt.hr_management.listener.response.leave.LeaveListGetAllResponse;
 import com.fpt.hr_management.listener.response.relations_personal.RPListGetOneResponse;
-import com.fpt.hr_management.listener.response.salary.SalaryListGetOneResponse;
+import com.fpt.hr_management.listener.response.salary.SalaryDetail;
 
 @Controller
 @RequestMapping("/api/employee")
-public class EmployeeController extends AccountLogin {
+public class EmployeeController extends AuthenticationAccount {
 
 	private EmployeeImpl service = new EmployeeImpl();
 	private LeaveImpl serviceLeave = new LeaveImpl();
@@ -97,7 +97,6 @@ public class EmployeeController extends AccountLogin {
 			return "redirect:/api/account/login";
 		}
 		if (userAuthen.getRoleId() == 1) {
-
 			AccountRegisterEmployeeGetName employeeName = new AccountRegisterEmployeeGetName();
 			List<AccountRegisterGetEmployeeNameResponse> listEmployeeName = new ArrayList<AccountRegisterGetEmployeeNameResponse>();
 			listEmployeeName = employeeName.getListEmployee();
@@ -157,8 +156,8 @@ public class EmployeeController extends AccountLogin {
 
 	@RequestMapping(value = "update/{id}")
 	public String updateEmployee(@PathVariable("id") int id, Model model, RedirectAttributes redirect) {
-		employeeId = id;
 
+		employeeId = id;
 		// Basic information employee
 		List<EmployeeGetOneResponse> infoEmployee = new ArrayList<EmployeeGetOneResponse>();
 		EmployeeGetOneRequest request = new EmployeeGetOneRequest();
@@ -177,8 +176,8 @@ public class EmployeeController extends AccountLogin {
 		List<SkillEmployeeGetOneResponse> listSkillEmployee = new ArrayList<SkillEmployeeGetOneResponse>();
 		SkillEmployeeGetOne skillEmployee = new SkillEmployeeGetOne();
 		SkillEmployeeGetOneRequest requestEmployeeSkill = new SkillEmployeeGetOneRequest();
-		requestEmployeeSkill.setEmployeeId(id);
-		listSkillEmployee = skillEmployee.info(requestEmployeeSkill);
+		requestEmployeeSkill.setOptionId(id);
+		listSkillEmployee = skillEmployee.info(requestEmployeeSkill, 1902);
 		model.addAttribute("listSkillEmployee", listSkillEmployee);
 		model.addAttribute("username", userAuthen.getUsername());
 		model.addAttribute("role", userAuthen.getRoleName());
@@ -219,9 +218,13 @@ public class EmployeeController extends AccountLogin {
 		model.addAttribute("type", type);
 
 		// SalaryInfo
-		List<SalaryListGetOneResponse> listSalary = new SalaryGetOne().getSalary(new SalaryListGetOneRequest(id));
-		model.addAttribute("listSalary", listSalary);
-		model.addAttribute("roleId", userAuthen.getRoleId());
+		List<SalaryDetail> salaryDetails = new ArrayList<SalaryDetail>();
+		SalaryPayRequest requestPay = new SalaryPayRequest(id);
+		salaryDetails = SalaryService.salaryDetail(requestPay);
+
+		model.addAttribute("fromDate", SalaryService.fromDateOfMonth());
+		model.addAttribute("toDate", SalaryService.toDateOfMonth());
+		model.addAttribute("salaryDetails", salaryDetails);
 
 		return "employee/profile";
 	}

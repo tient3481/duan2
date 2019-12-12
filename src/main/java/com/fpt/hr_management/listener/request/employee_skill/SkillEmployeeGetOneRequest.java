@@ -3,27 +3,27 @@ package com.fpt.hr_management.listener.request.employee_skill;
 import com.fpt.hr_management.listener.response.BaseRequest;
 
 public class SkillEmployeeGetOneRequest extends BaseRequest {
-	private int employeeId;
+	private int optionId;
 
 	public SkillEmployeeGetOneRequest() {
 	}
 
-	public SkillEmployeeGetOneRequest(int employeeId) {
-		this.employeeId = employeeId;
+	public SkillEmployeeGetOneRequest(int optionId) {
+		this.optionId = optionId;
 	}
 
-	public int getEmployeeId() {
-		return employeeId;
+	public int getOptionId() {
+		return optionId;
 	}
 
-	public void setEmployeeId(int employeeId) {
-		this.employeeId = employeeId;
+	public void setOptionId(int optionId) {
+		this.optionId = optionId;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("SkillEmployeeGetOneRequest [employeeId=").append(employeeId).append("]");
+		builder.append("SkillEmployeeGetOneRequest [optionId=").append(optionId).append("]");
 		return builder.toString();
 	}
 

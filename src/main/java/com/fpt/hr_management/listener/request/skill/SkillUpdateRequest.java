@@ -8,11 +8,9 @@ public class SkillUpdateRequest {
 	private String last_modifier_by;
 
 	public SkillUpdateRequest() {
-		super();
 	}
 
 	public SkillUpdateRequest(int id, String name, String description, int category_id, String last_modifier_by) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;

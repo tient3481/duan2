@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,11 +22,6 @@
 <link
 	href="https://blackrockdigital.github.io/startbootstrap-sb-admin/css/sb-admin.css"
 	rel="stylesheet" type="text/css">
-
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-	crossorigin="anonymous">
 
 </head>
 <body class="bg-dark">
@@ -57,7 +54,12 @@
 
 					<button type="submit" name="submitPassword"
 						class="btn btn-primary btn-block">Change</button>
-
+					<c:if test="${not empty message}">
+						<div class="alert alert-${alerted}" role="alert"
+							style="margin-top: 10px;">
+							Thông báo! <a href="#" class="alert-link"> ${message} </a>
+						</div>
+					</c:if>
 				</form>
 				<div class="text-center">
 					<a class="d-block small mt-3" href="register">Register an

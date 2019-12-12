@@ -19,7 +19,7 @@ public class SkillImpl implements DaoSkill {
 
 	public List<SkillCategoryListGetAllResponse> listSkillGetAll() {
 		SkillListGetAll service = new SkillListGetAll();
-		return service.get();
+		return service.getCategorySkill();
 	}
 
 	public List<SkillListGetOneResponse> listSkillGetOne(SkillListGetOneRequest request) {

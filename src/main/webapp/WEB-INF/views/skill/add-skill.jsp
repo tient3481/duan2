@@ -256,7 +256,7 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"> Add New Skill</i> <a
+						<i class="fas fa-table"> Thêm mới kỹ năng</i> <a
 							href="${pageContext.request.contextPath}/api/category-skill/add"
 							style="float: right;" class="btn btn-info" role="button">Thêm
 							mới</a>
@@ -312,7 +312,7 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 									</div>
 								</div>
 							</div>
-							<button type="submit" name="addSkill"
+							<button type="submit" name="addSkill" style="margin-left: 50%;"
 								class="btn btn-outline-warning">Save</button>
 							<br>
 							<c:if test="${not empty message}">

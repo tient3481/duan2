@@ -273,8 +273,8 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 												<div class="form-label-group">
 													<input type="text" class="form-control" id="1" name="name"
 														value="${listLeaveTypeGetOne.getName()}"
-														required="required" placeholder="Tên kỹ năng"> <label
-														for="5"> </label>
+														required="required"> <label for="5">LeaveTypeName
+													</label>
 												</div>
 											</div>
 										</div>
@@ -285,10 +285,10 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 											<label><b>Mô tả</b></label>
 											<div class="form-group">
 												<div class="form-label-group">
-													<input type="text" class="form-control" id="1" name="note"
+													<input type="text" class="form-control" id="2" name="note"
 														value="${listLeaveTypeGetOne.getNote()}"
-														required="required" placeholder="Tên kỹ năng"> <label
-														for="5"> </label>
+														required="required" placeholder=""> <label for="6">
+														LeaveTypeDescription</label>
 												</div>
 											</div>
 										</div>
@@ -298,7 +298,7 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 							</c:forEach>
 
 							<button type="submit" name="updateLeaveType"
-								class="btn btn-outline-warning">Update</button>
+								style="margin-left: 50%;" class="btn btn-outline-warning">Update</button>
 							<br>
 							<c:if test="${not empty message}">
 								<div class="alert alert-${alerted}" role="alert">

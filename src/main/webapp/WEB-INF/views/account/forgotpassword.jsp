@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,6 +52,12 @@
 					<button type="submit" name="submitEmail"
 						class="btn btn-primary btn-block">Send</button>
 
+					<c:if test="${not empty message}">
+						<div class="alert alert-${alerted}" role="alert"
+							style="margin-top: 10px;">
+							Thông báo! <a href="#" class="alert-link"> ${message} </a>
+						</div>
+					</c:if>
 				</form>
 				<div class="text-center">
 					<a class="d-block small mt-3" href="register">Register an

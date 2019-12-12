@@ -256,7 +256,7 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"></i> Data Table Example
+						<i class="fas fa-table"></i> Thông tin thời gian chấm công
 					</div>
 					<br>
 					<form action="${pageContext.request.contextPath}/api/employee">

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.fpt.hr_management.connection.DbConnection;
@@ -33,10 +35,28 @@ public class SalaryService {
 
 	private static EmployeeGetOne serviceEmployee = new EmployeeGetOne();
 
-	public static void salaryDetail(SalaryPayRequest request) {
+	public static List<SalaryDetail> salaryDetail(SalaryPayRequest request) {
+		SalaryDetail salaryDetail = new SalaryDetail();
+		if ((request.getFromDate() == null || request.getToDate() == null)) {
+			request.setFromDate(fromDateOfMonth());
+			request.setToDate(toDateOfMonth());
+
+			actionSalaryDetail(request);
+		} else {
+			actionSalaryDetail(request);
+		}
+
+		salaryDetail.setFromDate(request.getFromDate());
+		salaryDetail.setToDate(request.getToDate());
+
+		return actionSalaryDetail(request);
+	}
+
+	private static List<SalaryDetail> actionSalaryDetail(SalaryPayRequest request) {
 		List<SalaryBonusResponse> listSalaryBonus = null;
 		List<SalaryAllowanceResponse> listSalaryAllowance = null;
 		List<SalaryDisciplineResponse> listSalaryDiscipline = null;
+		List<SalaryDetail> salaryDetail = new ArrayList<SalaryDetail>();
 
 		listSalaryBonus = getSalaryBonus(
 				new SalaryBonusRequest(request.getEmployeeId(), request.getFromDate(), request.getToDate()));
@@ -83,25 +103,130 @@ public class SalaryService {
 
 		totalTime = sumTotalTime.getTimeSize(requestTime);
 		totalDay = CheckInService.workingDayActualOneMonth(totalTime);
-		totalSalary = (((baseSalary) / 26) * totalDay) + totalBonus + totalAllowance - totalDiscipline;
 
-		SalaryDetail detail = new SalaryDetail();
-		detail.setEmployeeId(request.getEmployeeId());
-		detail.setEmployeeName(employeeName);
-		detail.setActualWorkDay(totalDay);
-		detail.setBaseSalary(baseSalary);
+		int employeeId = request.getEmployeeId();
+		long actualWorkDay = totalDay;
 		int totalMoneyLunch = new HolidayGetTotal().getTotalLunch() * 35000;
-		detail.setLunchMoney(totalMoneyLunch);
+		long lunchMoney = totalMoneyLunch;
+		long phoneMoney = getPhoneMoney(employeeId);
+		long gasolineMoney = getGasolineMoney(request.getEmployeeId());
 
-		System.out.println("totalSalary: " + totalSalary);
+		if (totalDay == 0) {
+			lunchMoney = 0;
+			phoneMoney = 0;
+			gasolineMoney = 0;
+			totalBonus = 0;
+			totalAllowance = 0;
+			totalDiscipline = 0;
+		} else {
+			totalSalary = (((baseSalary) / 26) * totalDay) + totalBonus + totalAllowance - totalDiscipline + lunchMoney;
+		}
+		long actualSalary = totalSalary;
 
+		SalaryDetail detail = new SalaryDetail(employeeId, employeeName, actualWorkDay, baseSalary, lunchMoney,
+				phoneMoney, gasolineMoney, actualSalary);
+		salaryDetail = new ArrayList<SalaryDetail>();
+		salaryDetail.add(detail);
+
+		System.out.println(salaryDetail.toString());
+		return salaryDetail;
+	}
+
+	public static String fromDateOfMonth() {
+		Date dateNow = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dateNow);
+
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH);
+		int date = cal.getActualMinimum(Calendar.DAY_OF_MONTH);
+
+		StringBuilder sbDate;
+		sbDate = new StringBuilder();
+		sbDate.append(year).append("-");
+		sbDate.append(month < 10 ? "0" + month : month).append("-").append(date < 10 ? "0" + date : date);
+		System.out.println(sbDate);
+		return sbDate.toString();
+	}
+
+	public static String toDateOfMonth() {
+		Date dateNow = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dateNow);
+
+		int year = cal.get(Calendar.YEAR);
+		int month = cal.get(Calendar.MONTH);
+		int date = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+		StringBuilder sbDate;
+		sbDate = new StringBuilder();
+		sbDate.append(year).append("-");
+		sbDate.append(month < 10 ? "0" + month : month).append("-").append(date < 10 ? "0" + date : date);
+
+		System.out.println(sbDate);
+		return sbDate.toString();
 	}
 
 	public static void main(String[] args) {
-		salaryDetail(new SalaryPayRequest(1, "2019-12-09", "2019-12-10"));
+		// salaryDetail(new SalaryPayRequest(1, "2019-12-09", "2019-12-10"));
 //		getSalaryDiscipline(new SalaryDisciplineRequest(1, "2019-12-09", "2019-12-10"));
 //		getSalaryBonus(new SalaryBonusRequest(1, "2019-12-09", "2019-12-10"));
+		fromDateOfMonth();
+		toDateOfMonth();
+	}
 
+	private static long getPhoneMoney(int employeeId) {
+		String sql = "select e.full_name as employeeName, sa.total_salary from salary_allowance sa join employee e on e.id = sa.employee_id join salary_allowance_type sat on sat.id = sa.salary_allowance_type_id where sa.employee_id = ? and sat.name LIKE 'Phí điện thoại';";
+		long phoneMoney = 0;
+		try {
+			con = DbConnection.getConnection();
+			if (con != null) {
+				pstm = con.prepareStatement(sql);
+				pstm.setInt(1, employeeId);
+				ResultSet rs = pstm.executeQuery();
+				listBonusInfo = new ArrayList<SalaryBonusResponse>();
+				while (rs.next()) {
+					phoneMoney = rs.getLong("total_salary");
+				}
+
+				if (listBonusInfo.size() > 0) {
+					System.out.println(listBonusInfo.toString());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DbConnection.close(con, pstm, null, rs);
+		}
+
+		return phoneMoney;
+	}
+
+	private static long getGasolineMoney(int employeeId) {
+		String sql = "select e.full_name as employeeName, sa.total_salary from salary_allowance sa join employee e on e.id = sa.employee_id join salary_allowance_type sat on sat.id = sa.salary_allowance_type_id where sa.employee_id = ? and sat.name LIKE 'Phí xăng xe';";
+		long gasolineMoney = 0;
+		try {
+			con = DbConnection.getConnection();
+			if (con != null) {
+				pstm = con.prepareStatement(sql);
+				pstm.setInt(1, employeeId);
+				ResultSet rs = pstm.executeQuery();
+				listBonusInfo = new ArrayList<SalaryBonusResponse>();
+				while (rs.next()) {
+					gasolineMoney = rs.getLong("total_salary");
+				}
+
+				if (listBonusInfo.size() > 0) {
+					System.out.println(listBonusInfo.toString());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DbConnection.close(con, pstm, null, rs);
+		}
+
+		return gasolineMoney;
 	}
 
 	private static List<SalaryBonusResponse> getSalaryBonus(SalaryBonusRequest request) {

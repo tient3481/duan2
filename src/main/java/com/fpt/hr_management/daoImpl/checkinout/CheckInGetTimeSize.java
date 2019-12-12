@@ -22,7 +22,7 @@ public class CheckInGetTimeSize {
 		long totalTime = 0;
 		String sql = "SELECT total_time FROM check_in_history WHERE user_id = ? and date between '"
 				+ request.getCheck_in_time() + "' AND '" + request.getCheck_out_time() + "';";
-
+		System.out.println(sql);
 		try {
 			con = DbConnection.getConnection();
 			if (con != null) {
@@ -77,8 +77,8 @@ public class CheckInGetTimeSize {
 		CheckInGetTimeSize main = new CheckInGetTimeSize();
 		CheckInGetTimeRequest request = new CheckInGetTimeRequest();
 		request.setId(1);
-		request.setCheck_in_time("2019-12-09");
-		request.setCheck_out_time("2019-12-10");
+		request.setCheck_in_time("2019-12-01");
+		request.setCheck_out_time("2019-12-31");
 
 		main.getTimeSize(request);
 	}

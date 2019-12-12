@@ -256,82 +256,106 @@ ${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
-						<i class="fas fa-table"> Add Skill Employee</i>
+						<i class="fas fa-table"> Thêm mới kỹ năng nhân viên</i>
 					</div>
-					<div class="card-body">
-						<!-- Grid row -->
-						<div class="form-row">
-							<!-- Grid column -->
-							<div class="col-md-12">
-								<!-- Material input -->
-								<div class="md-form form-group">
-									<div class="form-group">
-										<label><b style="color: #ff0000;">Nhân viên</b></label>
-										<div class="form-label-group">
-											<select class="form-control" id="exampleFormControlSelect1">
-												<option>1</option>
-											</select>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-12">
-								<!-- Material input -->
-								<div class="md-form form-group">
-									<div class="form-group">
-										<label><b style="color: #ff0000;">Loại kỹ năng</b></label>
-										<div class="form-label-group">
-											<select class="form-control" id="exampleFormControlSelect1">
-												<option>1</option>
-											</select>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-12">
-								<!-- Material input -->
-								<div class="md-form form-group">
-									<div class="form-group">
-										<label><b style="color: #ff0000;">Kỹ năng chính</b></label>
-										<div class="form-label-group">
-											<select class="form-control" id="exampleFormControlSelect1">
-												<option>1</option>
-											</select>
-										</div>
-									</div>
-								</div>
-							</div>
 
-							<!-- Grid column -->
-							<div class="col-md-12">
-								<!-- Material input -->
-								<div class="md-form form-group">
-									<div class="form-group">
-										<label><b style="color: #ff0000;">Thời gian bắt
-												đầu kỹ năng</b></label>
-										<div class="form-label-group">
-											<input type="month" class="form-control" id="6"
-												placeholder="20/11/2002"> <label for="6">Ví
-												dụ: Tháng 11 năm 2019</label>
+					<form
+						action="${pageContext.request.contextPath}/api/employee/skill">
+						<div class="card-body">
+							<!-- Grid row -->
+							<div class="form-row">
+								<!-- Grid column -->
+								<div class="col-md-12">
+									<!-- Material input -->
+									<div class="md-form form-group">
+										<div class="form-group">
+											<label><b>Nhân viên</b></label>
+											<div class="form-label-group">
+												<select class="form-control" name="employee_id"
+													disabled="disabled">
+													<option value="${employeeId}">${employeeName}</option>
+												</select>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col-md-12">
-								<!-- Material input -->
-								<div class="md-form form-group">
-									<div class="form-group">
-										<label><b>Thời gian kết thúc kỹ năng</b></label>
-										<div class="form-label-group">
-											<input type="month" class="form-control" id="6"
-												placeholder="20/11/2002"> <label for="6">Ví
-												dụ: Tháng 11 năm 2025</label>
+								<div class="col-md-12">
+									<!-- Material input -->
+									<div class="md-form form-group">
+										<div class="form-group">
+											<label><b>Kỹ năng</b></label>
+											<div class="form-label-group">
+												<select class="form-control" name="skill_id">
+													<c:forEach items="${listSkill}" var="list">
+														<option value="${list.getId()}">${list.getName()}
+														</option>
+													</c:forEach>
+
+												</select>
+											</div>
 										</div>
 									</div>
 								</div>
+
+								<!-- Grid column -->
+								<div class="col-md-12">
+									<!-- Material input -->
+									<div class="md-form form-group">
+										<div class="form-group">
+											<label><b>Thời gian bắt đầu kỹ năng</b></label>
+											<div class="form-label-group">
+												<input type="number" class="form-control" id="6"
+													name="skill_start"> <label for="6">Ví dụ:
+													Năm 2019</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<!-- Material input -->
+									<div class="md-form form-group">
+										<div class="form-group">
+											<label><b>Thời gian kết thúc kỹ năng</b></label>
+											<div class="form-label-group">
+												<input type="number" class="form-control" id="6"
+													name="skill_end"> <label for="6">Ví dụ:Năm
+													2025</label>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-12">
+									<!-- Material input -->
+									<div class="md-form form-group">
+										<div class="form-group">
+											<label><b>Trình độ</b></label>
+											<div class="form-label-group">
+												<select class="form-control" name="level_id">
+													<c:forEach items="${listLevel}" var="list">
+														<option value="${list.getId()}">${list.getName()}
+														</option>
+													</c:forEach>
+
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div>
+									<button type="submit" name="addEmployeeSkill"
+										style="margin-left: 1500%;" class="btn btn-primary">Save</button>
+								</div>
+
+								<c:if test="${not empty message}">
+									<div class="alert alert-${alerted}" role="alert">
+										Thông báo! <a href="#" class="alert-link"> ${message} </a>
+									</div>
+								</c:if>
 							</div>
 						</div>
-					</div>
+					</form>
 				</div>
 			</div>
 

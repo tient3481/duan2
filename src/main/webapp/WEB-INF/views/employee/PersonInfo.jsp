@@ -97,6 +97,9 @@ ${pageContext.request.contextPath}/api/category-skill/get">Nhóm
 ${pageContext.request.contextPath}/api/skill/get">Kỹ
 						năng</a> <a class="dropdown-item"
 						href="
+${pageContext.request.contextPath}/api/level/get">Trình
+						độ </a> <a class="dropdown-item"
+						href="
 ${pageContext.request.contextPath}/api/department/get">Phòng
 						ban </a> <a class="dropdown-item"
 						href="
@@ -162,8 +165,8 @@ ${pageContext.request.contextPath}/api/employee/leave/add">Đăng
 					<h6 class="dropdown-header">Danh mục quản lý</h6>
 					<a class="dropdown-item"
 						href="
-${pageContext.request.contextPath}/api/employee/salary/get/${accountId}">Danh
-						sách bảng lương</a>
+${pageContext.request.contextPath}/api/employee/salary/details/get/${accountId}">Xem
+						bảng lương</a>
 					<div class="dropdown-divider"></div>
 
 				</div></li>

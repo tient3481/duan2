@@ -31,15 +31,15 @@
 					<div class="form-group">
 						<div class="form-label-group">
 							<input type="text" name="username" class="form-control"
-								placeholder="Email address" required="required"
+								value="anbv" placeholder="Email address" required="required"
 								autofocus="autofocus"> <label for="inputEmail">Username</label>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="form-label-group">
 							<input type="password" name="password" class="form-control"
-								placeholder="Password" required="required"> <label
-								for="inputPassword">Password</label>
+								value="human" placeholder="Password" required="required">
+							<label for="inputPassword">Password</label>
 						</div>
 					</div>
 					<div class="form-group">

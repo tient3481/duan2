@@ -15,13 +15,25 @@ public class LeaveListGetOne {
 	private static PreparedStatement pstm = null;
 	private static ResultSet rs = null;
 
-	public List<LeaveEmployeeGetOneResponse> info(LeaveGetOneRequest request) {
+	/**
+	 * @param request
+	 * @param if      optionId == 1902 -> result idTable else result employee_id
+	 *                param query
+	 * @return
+	 */
+	public List<LeaveEmployeeGetOneResponse> info(LeaveGetOneRequest request, int optionId) {
 		List<LeaveEmployeeGetOneResponse> list = new ArrayList<LeaveEmployeeGetOneResponse>();
-		String sql = "SELECT * FROM employee_leave WHERE id = ?;";
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT * FROM employee_leave WHERE ");
+		if (optionId == 1902) {
+			sql.append("id = ?;");
+		} else {
+			sql.append("employee_id = ?");
+		}
 		try {
 			con = DbConnection.getConnection();
 			if (con != null) {
-				pstm = con.prepareStatement(sql);
+				pstm = con.prepareStatement(sql.toString());
 				pstm.setInt(1, request.getIdRecord());
 				ResultSet rs = pstm.executeQuery();
 				LeaveEmployeeGetOneResponse employeeLeaveInfo = null;
@@ -49,10 +61,4 @@ public class LeaveListGetOne {
 		return list;
 	}
 
-//	public static void main(String[] args) {
-//		LeaveListGetOne main = new LeaveListGetOne();
-//		LeaveGetOneRequest request = new LeaveGetOneRequest();
-//		request.setIdRecord(13);
-//		main.info(request);
-//	}
 }

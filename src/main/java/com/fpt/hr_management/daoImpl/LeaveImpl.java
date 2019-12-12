@@ -35,9 +35,9 @@ public class LeaveImpl implements DaoLeave {
 		return service.getName();
 	}
 
-	public List<LeaveEmployeeGetOneResponse> getOne(LeaveGetOneRequest request) {
+	public List<LeaveEmployeeGetOneResponse> getOne(LeaveGetOneRequest request, int optionId) {
 		LeaveListGetOne service = new LeaveListGetOne();
-		return service.info(request);
+		return service.info(request, optionId);
 	}
 
 }

@@ -7,10 +7,10 @@ import com.fpt.hr_management.connection.DbConnection;
 import com.fpt.hr_management.model.account.Account;
 
 public class AccountRegister {
-	private Connection con;
-	private PreparedStatement pstm;
+	private static Connection con;
+	private static PreparedStatement pstm;
 
-	public void registerAccount(Account account) {
+	public static void registerAccount(Account account) {
 		String sql = "INSERT INTO user_role(role_id, employee_id, username, password, created_by, last_modifier_by) VALUES (?,?,?,?,?,?);";
 		try {
 			con = DbConnection.getConnection();
